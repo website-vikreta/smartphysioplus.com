@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Figtree, Sora } from "next/font/google";
+import { Analytics } from "@/components/Analytics";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {children}
         <Footer />
         <MobileActionBar />
+        <Analytics />
         {siteSchema().map((d) => (
           <JsonLd key={d["@type"].toString()} data={d} />
         ))}

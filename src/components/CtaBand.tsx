@@ -7,7 +7,11 @@ import { ButtonLink } from "./ButtonLink";
 export function CtaBand() {
   const { street, locality, city, postalCode } = clinic.address;
   return (
-    <section aria-labelledby="cta-heading" className="bg-sp-teal-100">
+    <section
+      id="book-cta"
+      aria-labelledby="cta-heading"
+      className="bg-sp-teal-100"
+    >
       <div className="mx-auto max-w-3xl px-4 py-12 text-center">
         <h2
           id="cta-heading"

@@ -23,6 +23,13 @@ export function pageMetadata(opts: {
       siteName: clinic.brandName,
       type: "website",
       locale: "en_IN",
+      images: [
+        {
+          url: `/og?title=${encodeURIComponent(opts.title.split(" | ")[0])}`,
+          width: 1200,
+          height: 630,
+        },
+      ],
     },
     ...(opts.noindex && { robots: { index: false, follow: false } }),
   };
