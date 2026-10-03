@@ -64,7 +64,7 @@ export default function PhysiotherapyPage() {
       <Section id="journey" title="The 3-step journey" tint>
         <div className="grid gap-6 md:grid-cols-3">
           {journey.map((j) => (
-            <div key={j.title}>
+            <div key={j.title} className="sp-card bg-sp-mist">
               <h3 className="font-semibold text-sp-blue-900">{j.title}</h3>
               <ul className="mt-2 list-disc space-y-2 pl-5">
                 {j.points.map((p) => (

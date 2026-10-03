@@ -24,6 +24,23 @@ export default function OrthoPage() {
         intro="Orthopedic physiotherapy looks after bones, joints, muscles and ligaments. Below is how we approach common problems. Your own plan is set after an assessment."
       />
 
+      <nav
+        aria-label="Jump to a condition"
+        className="mx-auto max-w-6xl px-4 pt-8"
+      >
+        <ul className="flex flex-wrap gap-2">
+          {conditions.map((c) => (
+            <li key={c.id}>
+              <a
+                href={`#${c.id}`}
+                className="inline-flex min-h-11 items-center rounded-full border border-sp-blue-700/30 bg-sp-white px-4 text-sm text-sp-blue-900 hover:bg-sp-teal-100"
+              >
+                {c.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
       <Section
         id="robotic-decompression"
         title="Robotic spine decompression"
@@ -49,7 +66,7 @@ export default function OrthoPage() {
 
       {conditions.map((c, i) => (
         <Section key={c.id} id={c.id} title={c.title} tint={i % 2 === 1}>
-          <dl className="grid max-w-3xl gap-3">
+          <dl className="sp-card grid max-w-3xl gap-3">
             <div>
               <dt className="font-semibold text-sp-blue-900">What it is</dt>
               <dd>{c.what}</dd>
