@@ -48,13 +48,13 @@ const concernLabel = (c: Concern) =>
 
 const pill = (on: boolean) =>
   cn(
-    "min-h-12 border-2 border-sp-blue-700 px-4 font-medium",
+    "min-h-12 rounded-full border-2 border-sp-blue-700 px-4 font-medium",
     on
       ? "bg-sp-blue-700 text-sp-white"
       : "bg-sp-white text-sp-blue-900 hover:bg-sp-teal-100",
   );
 const input =
-  "mt-1 block min-h-12 w-full border-2 border-sp-blue-900/40 bg-sp-white px-3";
+  "mt-1 block min-h-12 w-full rounded-xl border-2 border-sp-blue-900/40 bg-sp-white px-3";
 
 const dayLabel = (d: string) =>
   new Intl.DateTimeFormat("en-IN", {
@@ -216,7 +216,7 @@ export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
     const when = formatSlot(done.date, done.time);
     return (
       <div
-        className="max-w-xl border-2 border-sp-blue-700 bg-sp-white p-6"
+        className="max-w-xl rounded-3xl border-2 border-sp-blue-700 bg-sp-white p-6"
         role="status"
       >
         {/* Success state must not be indexed. */}
@@ -230,7 +230,7 @@ export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
         </p>
         <div className="mt-4 flex flex-col gap-3 sm:flex-row">
           <a
-            className="inline-flex min-h-12 items-center justify-center bg-sp-blue-700 px-5 font-medium text-sp-white hover:bg-sp-blue-900"
+            className="inline-flex min-h-12 items-center justify-center rounded-full bg-sp-blue-700 px-5 font-medium text-sp-white hover:bg-sp-blue-900"
             href={whatsappLink(
               `Hi, I just sent an appointment request on your website for ${when} (${concernLabel(done.concern)}). My name is ${done.name}.`,
             )}
@@ -240,7 +240,7 @@ export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
             Message us on WhatsApp now
           </a>
           <a
-            className="inline-flex min-h-12 items-center justify-center border-2 border-sp-blue-700 px-5 font-medium text-sp-blue-900 hover:bg-sp-teal-100"
+            className="inline-flex min-h-12 items-center justify-center rounded-full border-2 border-sp-blue-700 px-5 font-medium text-sp-blue-900 hover:bg-sp-teal-100"
             href={icsFile(done.date, done.time, slotMinutes)}
             download="smart-physio-appointment.ics"
           >
@@ -254,10 +254,28 @@ export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
   const err = formState.errors;
 
   return (
-    <form onSubmit={submit} onChange={begin} noValidate className="max-w-2xl">
+    <form
+      onSubmit={submit}
+      onChange={begin}
+      noValidate
+      className="sp-card max-w-2xl !p-6 md:!p-8"
+    >
       <p className="text-sm">
         Step {step + 1} of {TITLES.length}
       </p>
+      <div
+        role="progressbar"
+        aria-valuemin={1}
+        aria-valuemax={TITLES.length}
+        aria-valuenow={step + 1}
+        aria-label="Booking progress"
+        className="mt-2 h-2 overflow-hidden rounded-full bg-sp-teal-100"
+      >
+        <div
+          className="h-full rounded-full bg-sp-blue-700 transition-[width] duration-300"
+          style={{ width: `${((step + 1) / TITLES.length) * 100}%` }}
+        />
+      </div>
       <h2 className="mt-1 text-2xl font-semibold text-sp-blue-900">
         {TITLES[step]}
       </h2>
@@ -448,7 +466,7 @@ export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
 
       {step === 3 && (
         <div className="mt-4 space-y-4">
-          <dl className="grid gap-2 border border-sp-teal-100 bg-sp-white p-4 sm:grid-cols-[10rem_1fr]">
+          <dl className="sp-card grid gap-2 sm:grid-cols-[10rem_1fr]">
             <dt className="font-medium">Concern</dt>
             <dd>{v.concern && concernLabel(v.concern)}</dd>
             <dt className="font-medium">Preferred time</dt>
