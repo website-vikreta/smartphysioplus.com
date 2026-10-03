@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { technology } from "@/content/technology";
 import { routes } from "@/content/routes";
@@ -56,11 +57,22 @@ export function TechTabs() {
         aria-labelledby={`tech-tab-${i}`}
         className="sp-card mt-4 grid items-center gap-6 md:grid-cols-2"
       >
-        <PlaceholderImage
-          name="equipment"
-          alt={`Placeholder image for ${t.name}`}
-          className="aspect-[4/3] w-full rounded-2xl object-cover"
-        />
+        {i === 0 ? (
+          // Real clinic photo of the RoboSpine table.
+          <Image
+            src="/images/clinic/treatment-room.jpg"
+            alt={`${t.name} table at Smart Physio+`}
+            width={1400}
+            height={934}
+            className="aspect-[4/3] w-full rounded-2xl object-cover"
+          />
+        ) : (
+          <PlaceholderImage
+            name={`tech-${(i + 1) as 2 | 3 | 4 | 5 | 6}`}
+            alt={`Placeholder photo for ${t.name}`}
+            className="aspect-[4/3] w-full rounded-2xl object-cover"
+          />
+        )}
         <div>
           <h3 className="text-xl font-semibold text-sp-blue-900">{t.name}</h3>
           <p className="mt-2">{t.what}</p>

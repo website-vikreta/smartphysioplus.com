@@ -28,6 +28,9 @@ export const clinic = {
     // TODO-CONFIRM: Sunday closed / not listed on Google. Show "Sunday: closed" only after confirmation (flag: sunday).
   ],
   google: {
+    // From the Google Maps place page (Oct 2026).
+    geo: { lat: 18.5746556, lng: 73.7750866 },
+    rating: { value: "5.0", count: 35 },
     placeId: "ChIJAZjHwDm5wjsRFG7O4ZIiVqc",
     mapsUrl:
       "https://www.google.com/maps/search/?api=1&query=Smart+Physio%2B+Balewadi&query_place_id=ChIJAZjHwDm5wjsRFG7O4ZIiVqc",
