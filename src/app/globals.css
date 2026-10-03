@@ -1,0 +1,188 @@
+@import "tailwindcss";
+
+:root {
+  --sp-blue-700: #01689c;
+  --sp-blue-900: #013f5f;
+  --sp-teal-500: #1cabb0;
+  --sp-teal-100: #ddf4f5;
+  --sp-ink: #0e1b24;
+  --sp-mist: #f4f9fb;
+  --sp-white: #ffffff;
+  /* Pain hotspot on the 3D spine only. Nowhere else. */
+  --sp-signal: #e8735a;
+}
+
+@theme inline {
+  --color-sp-blue-700: var(--sp-blue-700);
+  --color-sp-blue-900: var(--sp-blue-900);
+  --color-sp-teal-500: var(--sp-teal-500);
+  --color-sp-teal-100: var(--sp-teal-100);
+  --color-sp-ink: var(--sp-ink);
+  --color-sp-mist: var(--sp-mist);
+  --color-sp-white: var(--sp-white);
+  --color-sp-signal: var(--sp-signal);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-body);
+}
+
+body {
+  background: var(--sp-mist);
+  color: var(--sp-ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+@layer components {
+  /* Soft white card on the mist background. */
+  .sp-card {
+    background: var(--sp-white);
+    border: 1px solid var(--sp-teal-100);
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 2px rgb(1 63 95 / 0.06);
+  }
+  .sp-card-link {
+    transition:
+      transform 0.4s ease-in-out,
+      box-shadow 0.4s ease-in-out;
+  }
+  .sp-card-link:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 32px rgb(1 63 95 / 0.15);
+  }
+  /* Blue-to-teal band for page banners and the hero. */
+  .sp-band {
+    background: linear-gradient(
+      135deg,
+      var(--sp-teal-100) 0%,
+      var(--sp-mist) 75%
+    );
+  }
+  /* Fade-up on load, staggered with style="animation-delay". */
+  .sp-rise {
+    animation: sp-rise 0.7s ease-out both;
+  }
+  /* Sharp slanted button: both sides leaning, no rounding. Outline is clipped, so focus uses an inset ring. */
+  .sp-btn {
+    border-radius: 0;
+    clip-path: polygon(0.8rem 0, 100% 0, calc(100% - 0.8rem) 100%, 0 100%);
+    transition:
+      background-color 0.25s,
+      color 0.25s,
+      transform 0.25s;
+  }
+  .sp-btn:hover {
+    transform: translateY(-2px);
+  }
+  .sp-btn:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 3px var(--sp-teal-500);
+    text-decoration: underline;
+  }
+  /* Tinted slanted button, used where the old design had an outlined pill. */
+  .sp-btn-line {
+    background: rgb(1 104 156 / 0.12);
+    color: var(--sp-blue-900);
+  }
+  .sp-btn-line:hover {
+    background: var(--sp-blue-700);
+    color: var(--sp-white);
+  }
+
+  /* Slow drifting colour orbs behind banners. Pure CSS, no markup. */
+  .sp-band,
+  .sp-dark {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .sp-band::before,
+  .sp-band::after,
+  .sp-dark::before,
+  .sp-dark::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+    animation: sp-drift 18s ease-in-out infinite alternate;
+  }
+  .sp-band::before {
+    width: 26rem;
+    height: 26rem;
+    top: -8rem;
+    right: -6rem;
+    background: rgb(28 171 176 / 0.28);
+  }
+  .sp-band::after {
+    width: 22rem;
+    height: 22rem;
+    bottom: -9rem;
+    left: 10%;
+    background: rgb(1 104 156 / 0.16);
+    animation-duration: 24s;
+    animation-direction: alternate-reverse;
+  }
+  .sp-dark::before {
+    width: 20rem;
+    height: 20rem;
+    top: -6rem;
+    left: -4rem;
+    background: rgb(28 171 176 / 0.4);
+  }
+  .sp-dark::after {
+    width: 18rem;
+    height: 18rem;
+    bottom: -7rem;
+    right: -3rem;
+    background: rgb(221 244 245 / 0.18);
+    animation-duration: 22s;
+  }
+  .sp-dark {
+    background: linear-gradient(135deg, var(--sp-blue-900), var(--sp-blue-700));
+    color: var(--sp-white);
+  }
+}
+
+@keyframes sp-drift {
+  to {
+    transform: translate(3rem, 2rem) scale(1.15);
+  }
+}
+
+@keyframes sp-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--sp-teal-500);
+  outline-offset: 2px;
+}
+
+.tour-active {
+  outline: 3px solid var(--sp-teal-500);
+  outline-offset: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
