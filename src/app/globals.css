@@ -33,6 +33,38 @@ body {
   line-height: 1.6;
 }
 
+@layer components {
+  /* Soft white card on the mist background. */
+  .sp-card {
+    background: var(--sp-white);
+    border: 1px solid var(--sp-teal-100);
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 2px rgb(1 63 95 / 0.06);
+  }
+  .sp-card-link {
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
+  }
+  .sp-card-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgb(1 63 95 / 0.1);
+  }
+  /* Blue-to-teal band for page banners and the hero. */
+  .sp-band {
+    background: linear-gradient(
+      135deg,
+      var(--sp-teal-100) 0%,
+      var(--sp-mist) 70%
+    );
+  }
+  .sp-dark {
+    background: linear-gradient(135deg, var(--sp-blue-900), var(--sp-blue-700));
+    color: var(--sp-white);
+  }
+}
+
 h1,
 h2,
 h3 {
