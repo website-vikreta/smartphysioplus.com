@@ -10,7 +10,7 @@ import { enquirySchema, type EnquiryInput } from "@/lib/schemas";
 import { Turnstile } from "./Turnstile";
 
 const input =
-  "mt-1 block min-h-12 w-full border-2 border-sp-blue-900/40 bg-sp-white px-3";
+  "mt-1 block min-h-12 w-full rounded-xl border-2 border-sp-blue-900/40 bg-sp-white px-3";
 
 export function ContactForm() {
   const [state, setState] = useState<"idle" | "sent">("idle");
@@ -51,7 +51,7 @@ export function ContactForm() {
     return (
       <p
         role="status"
-        className="max-w-xl border-2 border-sp-blue-700 bg-sp-white p-4"
+        className="max-w-xl rounded-2xl border-2 border-sp-blue-700 bg-sp-white p-4"
       >
         Thank you. We received your message and will get back to you shortly.
       </p>
@@ -133,7 +133,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={pending}
-        className="min-h-12 bg-sp-blue-700 px-6 font-medium text-sp-white hover:bg-sp-blue-900 disabled:opacity-60"
+        className="min-h-12 rounded-full bg-sp-blue-700 px-6 font-medium text-sp-white hover:bg-sp-blue-900 disabled:opacity-60"
       >
         {pending ? "Sending..." : "Send message"}
       </button>
