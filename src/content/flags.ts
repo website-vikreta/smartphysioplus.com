@@ -17,4 +17,5 @@ export const flags = {
   parking: false,
   landmarks: false,
   legalIds: false,
+  referral: false,
 } as const;

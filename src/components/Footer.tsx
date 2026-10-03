@@ -2,6 +2,7 @@ import Link from "next/link";
 import { clinic } from "@/content/clinic";
 import { routes } from "@/content/routes";
 import { formatHours } from "@/lib/format";
+import { TourLink } from "./TourLink";
 
 const quick = [
   routes.services,
@@ -90,7 +91,10 @@ export function Footer() {
               </li>
             ))}
           </ul>
-          {/* TODO(Phase 2): add the "Show me around" tour link and the CC-BY 3D model credit line here. */}
+          <p className="mt-3">
+            <TourLink className={`${link} min-h-12`} />
+          </p>
+          {/* The 3D spine is procedural. If a CC-BY model replaces it, add its credit line here. */}
         </div>
       </div>
       <p className="border-t border-sp-blue-700 px-4 py-4 text-center text-sm">
