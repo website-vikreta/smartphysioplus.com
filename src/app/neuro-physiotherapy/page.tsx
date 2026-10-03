@@ -3,6 +3,7 @@ import { ButtonLink } from "@/components/ButtonLink";
 import { DisclaimerNote } from "@/components/DisclaimerNote";
 import { Faq } from "@/components/Faq";
 import { JsonLd } from "@/components/JsonLd";
+import { StackCards, StackPanel } from "@/components/StackCards";
 import { PageHeading, PageShell, Section } from "@/components/PageShell";
 import { neuroFaq } from "@/content/faq";
 import { flags } from "@/content/flags";
@@ -17,6 +18,13 @@ export const metadata = pageMetadata({
     "Neuro physiotherapy for balance, movement and recovery in Balewadi, Pune. Learn what a neuro assessment includes and how to book at Smart Physio+.",
   path,
 });
+
+const assessment = [
+  "Your history, symptoms and goals",
+  "A review of any reports or scans you bring",
+  "Checks of balance, movement and strength",
+  "A clear explanation of the plan",
+];
 
 export default function NeuroPage() {
   return (
@@ -87,12 +95,12 @@ export default function NeuroPage() {
       )}
 
       <Section title="What a neuro assessment includes" tint>
-        <ul className="grid max-w-3xl list-disc gap-2 pl-5">
-          <li>Your history, symptoms and goals</li>
-          <li>A review of any reports or scans you bring</li>
-          <li>Checks of balance, movement and strength</li>
-          <li>A clear explanation of the plan</li>
-        </ul>
+        <StackCards
+          items={assessment.map((t, i) => ({
+            key: t,
+            content: <StackPanel n={i + 1} title={t} />,
+          }))}
+        />
         <p className="mt-4 max-w-2xl">
           Family members and caregivers are welcome to come along and ask
           questions. Meet{" "}

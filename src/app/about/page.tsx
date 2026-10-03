@@ -1,6 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
+import { StackCards, StackPanel } from "@/components/StackCards";
 import { PageHeading, PageShell, Section } from "@/components/PageShell";
-import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { TechTabs } from "@/components/TechTabs";
 import { clinic } from "@/content/clinic";
 import { flags } from "@/content/flags";
@@ -16,6 +17,25 @@ export const metadata = pageMetadata({
   path,
 });
 
+const care = [
+  {
+    title: "Assessment first",
+    body: "We start with a thorough assessment and personalise your plan.",
+  },
+  {
+    title: "Several skills together",
+    body: "Manual therapy, osteopathic and chiropractic techniques, exercise and advanced technology can work side by side.",
+  },
+  {
+    title: "Non-surgical first, where possible",
+    body: "We assess whether physiotherapy is a good option for you.",
+  },
+  {
+    title: "Clear explanations",
+    body: "We explain the plan, track progress and give you a home programme.",
+  },
+];
+
 export default function AboutPage() {
   return (
     <PageShell crumbs={[{ name: routes.about.name, path }]}>
@@ -25,25 +45,16 @@ export default function AboutPage() {
       />
 
       <Section title="How we think about care">
-        <ul className="grid max-w-3xl list-disc gap-2 pl-5">
-          <li>
-            <strong>Assessment first.</strong> We start with a thorough
-            assessment and personalise your plan.
-          </li>
-          <li>
-            <strong>Several skills together.</strong> Manual therapy,
-            osteopathic and chiropractic techniques, exercise and advanced
-            technology can work side by side.
-          </li>
-          <li>
-            <strong>Non-surgical first, where possible.</strong> We assess
-            whether physiotherapy is a good option for you.
-          </li>
-          <li>
-            <strong>Clear explanations.</strong> We explain the plan, track
-            progress and give you a home programme.
-          </li>
-        </ul>
+        <StackCards
+          items={care.map((c, i) => ({
+            key: c.title,
+            content: (
+              <StackPanel n={i + 1} title={c.title}>
+                <p>{c.body}</p>
+              </StackPanel>
+            ),
+          }))}
+        />
         {/* TODO-CONFIRM: women-owned clinic (flag: womenOwned). */}
         {flags.womenOwned && (
           <p className="mt-4">Smart Physio+ is a women-owned clinic.</p>
@@ -52,15 +63,19 @@ export default function AboutPage() {
 
       <Section title="The clinic" tint>
         <div className="grid gap-4 sm:grid-cols-2">
-          <PlaceholderImage
-            name="clinic"
-            alt="Placeholder photo of the clinic reception"
-            className="w-full"
+          <Image
+            src="/images/clinic/reception.jpg"
+            alt="Reception at Smart Physio+ with the clinic sign and a waiting sofa"
+            width={1280}
+            height={854}
+            className="w-full rounded-2xl"
           />
-          <PlaceholderImage
-            name="clinic"
-            alt="Placeholder photo of a treatment room"
-            className="w-full"
+          <Image
+            src="/images/clinic/treatment-room.jpg"
+            alt="Treatment room with the RoboSpine robotic decompression table"
+            width={1400}
+            height={934}
+            className="w-full rounded-2xl"
           />
         </div>
       </Section>

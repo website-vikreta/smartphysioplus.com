@@ -22,7 +22,7 @@
   --color-sp-white: var(--sp-white);
   --color-sp-signal: var(--sp-signal);
   --font-sans: var(--font-body);
-  --font-display: var(--font-sora);
+  --font-display: var(--font-body);
 }
 
 body {
@@ -44,20 +44,74 @@ body {
   }
   .sp-card-link {
     transition:
-      transform 0.2s,
-      box-shadow 0.2s;
+      transform 0.4s ease-in-out,
+      box-shadow 0.4s ease-in-out;
   }
   .sp-card-link:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgb(1 63 95 / 0.1);
+    transform: translateY(-6px);
+    box-shadow: 0 16px 32px rgb(1 63 95 / 0.15);
   }
   /* Blue-to-teal band for page banners and the hero. */
   .sp-band {
     background: linear-gradient(
       135deg,
       var(--sp-teal-100) 0%,
-      var(--sp-mist) 70%
+      var(--sp-mist) 75%
     );
+  }
+  /* Fade-up on load, staggered with style="animation-delay". */
+  .sp-rise {
+    animation: sp-rise 0.7s ease-out both;
+  }
+  /* Slow drifting colour orbs behind banners. Pure CSS, no markup. */
+  .sp-band,
+  .sp-dark {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .sp-band::before,
+  .sp-band::after,
+  .sp-dark::before,
+  .sp-dark::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+    animation: sp-drift 18s ease-in-out infinite alternate;
+  }
+  .sp-band::before {
+    width: 26rem;
+    height: 26rem;
+    top: -8rem;
+    right: -6rem;
+    background: rgb(28 171 176 / 0.28);
+  }
+  .sp-band::after {
+    width: 22rem;
+    height: 22rem;
+    bottom: -9rem;
+    left: 10%;
+    background: rgb(1 104 156 / 0.16);
+    animation-duration: 24s;
+    animation-direction: alternate-reverse;
+  }
+  .sp-dark::before {
+    width: 20rem;
+    height: 20rem;
+    top: -6rem;
+    left: -4rem;
+    background: rgb(28 171 176 / 0.4);
+  }
+  .sp-dark::after {
+    width: 18rem;
+    height: 18rem;
+    bottom: -7rem;
+    right: -3rem;
+    background: rgb(221 244 245 / 0.18);
+    animation-duration: 22s;
   }
   .sp-dark {
     background: linear-gradient(135deg, var(--sp-blue-900), var(--sp-blue-700));
@@ -65,11 +119,25 @@ body {
   }
 }
 
+@keyframes sp-drift {
+  to {
+    transform: translate(3rem, 2rem) scale(1.15);
+  }
+}
+
+@keyframes sp-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
 h1,
 h2,
 h3 {
   font-family: var(--font-display), system-ui, sans-serif;
-  letter-spacing: -0.02em;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 :focus-visible {

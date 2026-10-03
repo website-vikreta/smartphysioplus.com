@@ -2,6 +2,8 @@ import Link from "next/link";
 import { DisclaimerNote } from "@/components/DisclaimerNote";
 import { Faq } from "@/components/Faq";
 import { JsonLd } from "@/components/JsonLd";
+import { PlaceholderImage } from "@/components/PlaceholderImage";
+import { StackCards, StackPanel } from "@/components/StackCards";
 import { PageHeading, PageShell, Section } from "@/components/PageShell";
 import { physioFaq } from "@/content/faq";
 import { routes } from "@/content/routes";
@@ -62,18 +64,30 @@ export default function PhysiotherapyPage() {
       </Section>
 
       <Section id="journey" title="The 3-step journey" tint>
-        <div className="grid gap-6 md:grid-cols-3">
-          {journey.map((j) => (
-            <div key={j.title} className="sp-card bg-sp-mist">
-              <h3 className="font-semibold text-sp-blue-900">{j.title}</h3>
-              <ul className="mt-2 list-disc space-y-2 pl-5">
-                {j.points.map((p) => (
-                  <li key={p}>{p}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+        <StackCards
+          items={journey.map((j, i) => ({
+            key: j.title,
+            content: (
+              <StackPanel
+                n={i + 1}
+                title={j.title}
+                image={
+                  <PlaceholderImage
+                    name={(["leg", "back", "exercise"] as const)[i % 3]}
+                    alt={`Placeholder photo for ${j.title.toLowerCase()}`}
+                    className="h-44 w-full object-cover md:h-full md:min-h-56"
+                  />
+                }
+              >
+                <ul className="list-disc space-y-2 pl-5">
+                  {j.points.map((p) => (
+                    <li key={p}>{p}</li>
+                  ))}
+                </ul>
+              </StackPanel>
+            ),
+          }))}
+        />
       </Section>
 
       <Section id="approaches" title="Treatment approaches">

@@ -37,7 +37,11 @@ export function siteSchema() {
         postalCode,
         addressCountry: country,
       },
-      // TODO-CONFIRM: add exact `geo` (latitude/longitude) from the Google place.
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: clinic.google.geo.lat,
+        longitude: clinic.google.geo.lng,
+      },
       openingHoursSpecification: clinic.hours.map((h) => ({
         "@type": "OpeningHoursSpecification",
         dayOfWeek: h.days.map((d) => DAY_URL[d]),

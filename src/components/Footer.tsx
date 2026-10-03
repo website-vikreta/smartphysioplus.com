@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { clinic } from "@/content/clinic";
 import { routes } from "@/content/routes";
 import { formatHours, whatsappLink } from "@/lib/format";
 import { ButtonLink } from "./ButtonLink";
-import { Icon } from "./Icon";
+import { Icon, IconBadge, type IconName } from "./Icon";
 import { TourLink } from "./TourLink";
 
 const care = [
@@ -26,145 +27,173 @@ const social = [
   { name: "Facebook", icon: "facebook", href: clinic.social.facebook },
 ] as const;
 
-const link =
-  "text-sp-teal-100 underline-offset-4 hover:text-sp-white hover:underline";
-const heading = "mb-3 font-display text-base font-semibold text-sp-white";
+const link = "text-sp-teal-100 transition-colors hover:text-sp-white";
+const tile =
+  "flex items-start gap-4 rounded-2xl border border-white/10 bg-white/10 p-5 backdrop-blur-sm transition-transform duration-300 hover:-translate-y-1";
+
+// Same heading style as page sections: title with a short teal bar.
+function Heading({ children }: { children: string }) {
+  return (
+    <div className="mb-5">
+      <p className="font-display text-lg font-semibold text-sp-white">
+        {children}
+      </p>
+      <span
+        className="mt-2 block h-1 w-10 rounded-full bg-sp-teal-500"
+        aria-hidden="true"
+      />
+    </div>
+  );
+}
+
+function Tile({
+  icon,
+  title,
+  children,
+}: {
+  icon: IconName;
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className={tile}>
+      <IconBadge name={icon} className="!size-11 shrink-0" />
+      <div>
+        <p className="font-display font-semibold text-sp-white">{title}</p>
+        <div className="mt-1 text-sm text-sp-teal-100">{children}</div>
+      </div>
+    </div>
+  );
+}
 
 export function Footer() {
   const { street, locality, city, region, postalCode } = clinic.address;
   return (
-    <footer className="mt-auto bg-sp-blue-900 pb-20 text-sp-teal-100 md:pb-0">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 md:grid-cols-2 lg:grid-cols-4">
-        <div>
-          <Link href={routes.home.path} aria-label={`${clinic.brandName} home`}>
-            <Image
-              src="/brand/logo.png"
-              alt=""
-              width={1700}
-              height={380}
-              className="h-14 w-auto rounded-xl bg-sp-white px-3 py-1"
-            />
-          </Link>
-          <p className="mt-4 max-w-xs">
-            {clinic.tagline}. Assessment-led physiotherapy in {locality}, {city}
-            .
-          </p>
-          <ButtonLink
-            href={routes.book.path}
-            variant="light"
-            icon="calendar"
-            className="mt-5"
-          >
-            Book appointment
-          </ButtonLink>
+    <footer className="sp-dark mt-auto rounded-t-[2.5rem] pb-20 text-sp-teal-100 md:pb-0">
+      <div className="mx-auto max-w-6xl px-4 pt-14">
+        <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr]">
+          <div>
+            <Link
+              href={routes.home.path}
+              aria-label={`${clinic.brandName} home`}
+            >
+              <Image
+                src="/brand/logo.png"
+                alt=""
+                width={1700}
+                height={380}
+                className="h-14 w-auto rounded-2xl bg-sp-white px-4 py-1"
+              />
+            </Link>
+            <p className="mt-5 max-w-sm">
+              {clinic.tagline}. Assessment-led physiotherapy in {locality},{" "}
+              {city}.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <ButtonLink
+                href={routes.book.path}
+                variant="light"
+                icon="calendar"
+              >
+                Book appointment
+              </ButtonLink>
+              {social.map((s) => (
+                <a
+                  key={s.name}
+                  href={s.href}
+                  aria-label={s.name}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex size-12 items-center justify-center rounded-full border border-white/20 bg-white/10 text-sp-white transition-all duration-300 hover:-translate-y-1 hover:bg-sp-white hover:text-sp-blue-900"
+                >
+                  <Icon name={s.icon} />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <nav aria-label="Care">
+            <Heading>Our care</Heading>
+            <ul className="space-y-3">
+              {care.map((r) => (
+                <li key={r.path}>
+                  <Link href={r.path} className={link}>
+                    {r.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav aria-label="Footer">
+            <Heading>Explore</Heading>
+            <ul className="space-y-3">
+              {explore.map((r) => (
+                <li key={r.path}>
+                  <Link href={r.path} className={link}>
+                    {r.name}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <TourLink className={`${link} min-h-11 text-left`} />
+              </li>
+            </ul>
+          </nav>
         </div>
 
-        <nav aria-label="Care">
-          <p className={heading}>Our care</p>
-          <ul className="space-y-2">
-            {care.map((r) => (
-              <li key={r.path}>
-                <Link href={r.path} className={link}>
-                  {r.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        <nav aria-label="Footer">
-          <p className={heading}>Explore</p>
-          <ul className="space-y-2">
-            {explore.map((r) => (
-              <li key={r.path}>
-                <Link href={r.path} className={link}>
-                  {r.name}
-                </Link>
-              </li>
-            ))}
-            <li>
-              <TourLink className={`${link} min-h-11 text-left`} />
-            </li>
-          </ul>
-        </nav>
-
-        <div>
-          <p className={heading}>Visit us</p>
-          <address className="flex gap-2 not-italic">
-            <Icon name="pin" className="mt-1 size-5 shrink-0" />
-            <span>
-              {street}
-              <br />
-              {locality}, {city}, {region} {postalCode}
-            </span>
-          </address>
-          <p className="mt-3 flex gap-2">
-            <Icon name="clock" className="mt-1 size-5 shrink-0" />
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Tile icon="pin" title="Visit us">
+            <address className="not-italic">
+              {street}, {locality}, {city}, {region} {postalCode}
+            </address>
+            <a
+              href={clinic.google.directionsUrl}
+              className={`${link} mt-2 inline-block underline underline-offset-4`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Get directions
+            </a>
+          </Tile>
+          <Tile icon="clock" title="Opening hours">
             {formatHours()}
-          </p>
-          <p className="mt-3 flex gap-2">
-            <Icon name="phone" className="mt-1 size-5 shrink-0" />
+          </Tile>
+          <Tile icon="phone" title="Call us">
             <a href={clinic.phone.tel} className={link}>
               {clinic.phone.display}
             </a>
-          </p>
-          <p className="mt-3 flex gap-2">
-            <Icon name="whatsapp" className="mt-1 size-5 shrink-0" />
+          </Tile>
+          <Tile icon="whatsapp" title="WhatsApp">
             <a
               href={whatsappLink()}
               className={link}
               target="_blank"
               rel="noopener noreferrer"
             >
-              WhatsApp us
+              Message us
             </a>
-          </p>
-          <p className="mt-3 flex gap-2">
-            <Icon name="arrow" className="mt-1 size-5 shrink-0" />
-            <a
-              href={clinic.google.directionsUrl}
-              className={link}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Get directions
-            </a>
-          </p>
-          <ul className="mt-4 flex items-center gap-3">
-            {social.map((s) => (
-              <li key={s.name}>
-                <a
-                  href={s.href}
-                  aria-label={s.name}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex size-11 items-center justify-center rounded-full bg-sp-blue-700 text-sp-white hover:bg-sp-teal-500 hover:text-sp-blue-900"
-                >
-                  <Icon name={s.icon} />
-                </a>
-              </li>
-            ))}
-            <li>
+            <span className="mt-2 block">
               <a
                 href={clinic.social.justdial}
-                className={link}
+                className={`${link} underline underline-offset-4`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Justdial
+                Find us on Justdial
               </a>
-            </li>
-          </ul>
+            </span>
+          </Tile>
         </div>
       </div>
       {/* The 3D spine is procedural. If a CC-BY model replaces it, add its credit line here. */}
-      <div className="border-t border-sp-blue-700">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-4 text-sm md:flex-row">
+      <div className="mt-12 border-t border-white/10">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-5 text-sm md:flex-row">
           <p>
             &copy; {new Date().getFullYear()} {clinic.brandName}.{" "}
             {clinic.tagline}.
           </p>
-          <ul className="flex flex-wrap gap-4">
+          <ul className="flex flex-wrap gap-5">
             {legal.map((r) => (
               <li key={r.path}>
                 <Link href={r.path} className={link}>

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Breadcrumbs } from "./Breadcrumbs";
 import { CtaBand } from "./CtaBand";
+import { Reveal } from "./Reveal";
 
 type Props = {
   crumbs?: { name: string; path: string }[];
@@ -37,7 +38,7 @@ export function Section({
     <section id={id} className={tint ? "bg-sp-white" : undefined}>
       <div className="mx-auto max-w-6xl scroll-mt-24 px-4 py-12 md:py-16">
         {title && (
-          <div className="mb-8 max-w-2xl">
+          <Reveal className="mb-8 max-w-2xl">
             <h2 className="text-2xl font-semibold text-sp-blue-900 md:text-3xl">
               {title}
             </h2>
@@ -46,9 +47,9 @@ export function Section({
               aria-hidden="true"
             />
             {intro && <p className="mt-4 text-lg">{intro}</p>}
-          </div>
+          </Reveal>
         )}
-        {children}
+        <Reveal delay={0.1}>{children}</Reveal>
       </div>
     </section>
   );

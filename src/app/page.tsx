@@ -4,6 +4,7 @@ import { CtaBand } from "@/components/CtaBand";
 import { Faq } from "@/components/Faq";
 import { Icon, IconBadge, type IconName } from "@/components/Icon";
 import { MapFacade } from "@/components/MapFacade";
+import { StackCards } from "@/components/StackCards";
 import { Section } from "@/components/PageShell";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { Reviews } from "@/components/Reviews";
@@ -44,6 +45,14 @@ const steps = [
     body: "Therapeutic exercise and a personalised exercise plan help you rebuild strength and movement. We check your progress and give you exercises to do at home.",
   },
 ];
+
+const stepImg = ["leg", "back", "exercise"] as const;
+const careImg = {
+  spine: "spine",
+  joint: "shoulder",
+  brain: "exercise",
+  hands: "back",
+} as const;
 
 const care: {
   icon: IconName;
@@ -135,7 +144,7 @@ export default function Home() {
       <main id="main" className="flex-1">
         <section className="sp-band">
           <div className="mx-auto grid max-w-6xl gap-10 px-4 py-10 md:grid-cols-2 md:items-center md:py-16">
-            <div>
+            <div className="sp-rise">
               <h1 className="text-4xl font-bold text-sp-blue-900 md:text-5xl">
                 Back, neck or joint pain? Get a clear treatment plan in
                 Balewadi.
@@ -185,8 +194,17 @@ export default function Home() {
                 )}
               </ul>
             </div>
-            <div className="sp-card !rounded-3xl !p-4 md:!p-6">
-              <SpinePanel />
+            <div
+              className="sp-rise relative"
+              style={{ animationDelay: "0.2s" }}
+            >
+              <div
+                aria-hidden
+                className="absolute -bottom-4 -right-4 hidden size-full rounded-[2rem] bg-sp-blue-700/15 md:block"
+              />
+              <div className="sp-card relative !rounded-[2rem] !p-4 shadow-xl md:!p-6">
+                <SpinePanel />
+              </div>
             </div>
           </div>
         </section>
@@ -198,24 +216,36 @@ export default function Home() {
         >
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {care.map((c) => (
-              <div key={c.title} className="sp-card sp-card-link bg-sp-mist">
-                <IconBadge name={c.icon} />
-                <h3 className="mt-4 text-lg font-semibold text-sp-blue-900">
-                  {c.title}
-                </h3>
-                <p className="mt-1 text-sm">{c.blurb}</p>
-                <ul className="mt-4 flex flex-wrap gap-2">
-                  {c.items.map((i) => (
-                    <li key={i.name}>
-                      <Link
-                        href={i.href}
-                        className="inline-flex min-h-11 items-center rounded-full border border-sp-blue-700/30 bg-sp-white px-3 text-sm text-sp-blue-900 hover:bg-sp-teal-100"
-                      >
-                        {i.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+              <div
+                key={c.title}
+                className="sp-card sp-card-link group overflow-hidden bg-sp-mist !p-0"
+              >
+                <div className="h-36 overflow-hidden">
+                  <PlaceholderImage
+                    name={careImg[c.icon as keyof typeof careImg]}
+                    alt={`Placeholder photo for ${c.title.toLowerCase()}`}
+                    className="size-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                </div>
+                <div className="p-6">
+                  <IconBadge name={c.icon} />
+                  <h3 className="mt-4 text-lg font-semibold text-sp-blue-900">
+                    {c.title}
+                  </h3>
+                  <p className="mt-1 text-sm">{c.blurb}</p>
+                  <ul className="mt-4 flex flex-wrap gap-2">
+                    {c.items.map((i) => (
+                      <li key={i.name}>
+                        <Link
+                          href={i.href}
+                          className="inline-flex min-h-11 items-center rounded-full border border-sp-blue-700/30 bg-sp-white px-3 text-sm text-sp-blue-900 hover:bg-sp-teal-100"
+                        >
+                          {i.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             ))}
           </div>
@@ -241,26 +271,34 @@ export default function Home() {
         <Section
           id="journey"
           title="How it works"
-          intro="Three steps from first visit to recovery. Tap a step to read more."
+          intro="Three steps from first visit to recovery. Keep scrolling."
         >
-          <ol className="grid gap-5 md:grid-cols-3">
-            {steps.map((s, i) => (
-              <li key={s.title}>
-                <details className="sp-card group h-full" open={i === 0}>
-                  <summary className="flex cursor-pointer list-none items-center gap-4">
-                    <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-sp-blue-700 font-display text-lg font-semibold text-sp-white">
-                      {i + 1}
-                    </span>
-                    <span className="flex-1 text-lg font-semibold text-sp-blue-900">
-                      {s.title}
-                    </span>
-                    <Icon name={s.icon} className="size-6 text-sp-teal-500" />
-                  </summary>
-                  <p className="mt-4">{s.body}</p>
-                </details>
-              </li>
-            ))}
-          </ol>
+          <StackCards
+            items={steps.map((s, i) => ({
+              key: s.title,
+              content: (
+                <div className="sp-card grid overflow-hidden !p-0 shadow-xl md:grid-cols-2">
+                  <PlaceholderImage
+                    name={stepImg[i]}
+                    alt={`Placeholder photo for ${s.title.toLowerCase()}`}
+                    className="h-48 w-full object-cover md:h-full md:min-h-72"
+                  />
+                  <div className="p-6 md:p-10">
+                    <div className="flex items-center gap-4">
+                      <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-sp-blue-700 font-display text-lg font-semibold text-sp-white">
+                        {i + 1}
+                      </span>
+                      <h3 className="flex-1 text-xl font-semibold text-sp-blue-900">
+                        {s.title}
+                      </h3>
+                      <Icon name={s.icon} className="size-7 text-sp-teal-500" />
+                    </div>
+                    <p className="mt-5">{s.body}</p>
+                  </div>
+                </div>
+              ),
+            }))}
+          />
           <p className="mt-6">
             <Link
               href={routes.physiotherapy.path}
@@ -335,14 +373,14 @@ export default function Home() {
         <Section title="Visit us">
           <div className="grid gap-6 md:grid-cols-2">
             <div className="sp-card space-y-4">
-              <p className="flex gap-3">
+              <div className="flex gap-3">
                 <IconBadge name="pin" className="!size-10 shrink-0" />
                 <address className="not-italic">
                   {a.street}
                   <br />
                   {a.locality}, {a.city}, {a.region} {a.postalCode}
                 </address>
-              </p>
+              </div>
               <p className="flex items-center gap-3">
                 <IconBadge name="clock" className="!size-10 shrink-0" />
                 {formatHours()}
