@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PageHeading, PageShell, Section } from "@/components/PageShell";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
-import { TechCarousel } from "@/components/TechCarousel";
+import { TechTabs } from "@/components/TechTabs";
 import { clinic } from "@/content/clinic";
 import { flags } from "@/content/flags";
 import { routes } from "@/content/routes";
@@ -66,7 +66,7 @@ export default function AboutPage() {
       </Section>
 
       <Section title="The technology">
-        <TechCarousel />
+        <TechTabs />
       </Section>
 
       <Section tint>

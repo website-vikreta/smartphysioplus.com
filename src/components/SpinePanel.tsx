@@ -64,7 +64,7 @@ export function SpinePanel() {
     <div id="spine-hero">
       <div
         ref={box}
-        className="relative h-72 w-full bg-sp-white md:h-[28rem]"
+        className="relative h-72 w-full rounded-2xl bg-sp-mist md:h-[28rem]"
         aria-hidden="true"
       >
         {load3d ? (
@@ -95,7 +95,7 @@ export function SpinePanel() {
               aria-pressed={selected === r.id}
               onClick={() => select(r.id)}
               className={cn(
-                "min-h-12 border-2 px-4 font-medium",
+                "min-h-12 rounded-full border-2 px-4 font-medium",
                 selected === r.id
                   ? "border-sp-blue-700 bg-sp-blue-700 text-sp-white"
                   : "border-sp-blue-700 bg-sp-white text-sp-blue-900 hover:bg-sp-teal-100",
@@ -109,7 +109,7 @@ export function SpinePanel() {
 
       <div
         aria-live="polite"
-        className="mt-4 min-h-32 border border-sp-teal-100 bg-sp-white/80 p-4 backdrop-blur"
+        className="mt-4 min-h-32 rounded-2xl border border-sp-teal-100 bg-sp-white/80 p-4 backdrop-blur"
       >
         {region ? (
           <>
