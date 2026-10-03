@@ -41,10 +41,8 @@ export function TechTabs() {
             tabIndex={i === n ? 0 : -1}
             onClick={() => setI(n)}
             className={cn(
-              "min-h-12 shrink-0 rounded-full border-2 border-sp-blue-700 px-5 font-medium",
-              i === n
-                ? "bg-sp-blue-700 text-sp-white"
-                : "bg-sp-white text-sp-blue-900 hover:bg-sp-teal-100",
+              "sp-btn min-h-12 shrink-0 px-8 font-medium",
+              i === n ? "bg-sp-blue-700 text-sp-white" : "sp-btn-line",
             )}
           >
             {x.name}

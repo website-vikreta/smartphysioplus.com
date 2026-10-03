@@ -104,7 +104,7 @@ export function Footer() {
                   aria-label={s.name}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex size-12 items-center justify-center rounded-full border border-white/20 bg-white/10 text-sp-white transition-all duration-300 hover:-translate-y-1 hover:bg-sp-white hover:text-sp-blue-900"
+                  className="sp-btn inline-flex h-12 w-14 items-center justify-center bg-white/15 text-sp-white hover:bg-sp-white hover:text-sp-blue-900"
                 >
                   <Icon name={s.icon} />
                 </a>

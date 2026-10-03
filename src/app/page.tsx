@@ -238,7 +238,7 @@ export default function Home() {
                       <li key={i.name}>
                         <Link
                           href={i.href}
-                          className="inline-flex min-h-11 items-center rounded-full border border-sp-blue-700/30 bg-sp-white px-3 text-sm text-sp-blue-900 hover:bg-sp-teal-100"
+                          className="sp-btn sp-btn-line inline-flex min-h-11 items-center px-5 text-sm"
                         >
                           {i.name}
                         </Link>

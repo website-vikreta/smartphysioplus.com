@@ -37,10 +37,8 @@ export function ServiceGrid({
               aria-pressed={active === g}
               onClick={() => setActive(g)}
               className={cn(
-                "min-h-11 rounded-full border-2 border-sp-blue-700 px-4 text-sm font-medium",
-                active === g
-                  ? "bg-sp-blue-700 text-sp-white"
-                  : "bg-sp-white text-sp-blue-900 hover:bg-sp-teal-100",
+                "sp-btn min-h-11 px-6 text-sm font-medium",
+                active === g ? "bg-sp-blue-700 text-sp-white" : "sp-btn-line",
               )}
             >
               {g}
