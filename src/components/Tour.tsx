@@ -80,7 +80,7 @@ export function Tour() {
           type="button"
           autoFocus
           onClick={() => (last ? finish(true) : setStep(step + 1))}
-          className="min-h-12 bg-sp-blue-700 px-5 font-medium text-sp-white hover:bg-sp-blue-900"
+          className="sp-btn min-h-12 bg-sp-blue-700 px-8 font-medium text-sp-white hover:bg-sp-blue-900"
         >
           {last ? "Done" : "Next"}
         </button>

@@ -48,10 +48,8 @@ const concernLabel = (c: Concern) =>
 
 const pill = (on: boolean) =>
   cn(
-    "min-h-12 rounded-full border-2 border-sp-blue-700 px-4 font-medium",
-    on
-      ? "bg-sp-blue-700 text-sp-white"
-      : "bg-sp-white text-sp-blue-900 hover:bg-sp-teal-100",
+    "sp-btn min-h-12 px-6 font-medium",
+    on ? "bg-sp-blue-700 text-sp-white" : "sp-btn-line",
   );
 const input =
   "mt-1 block min-h-12 w-full rounded-xl border-2 border-sp-blue-900/40 bg-sp-white px-3";
@@ -230,7 +228,7 @@ export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
         </p>
         <div className="mt-4 flex flex-col gap-3 sm:flex-row">
           <a
-            className="inline-flex min-h-12 items-center justify-center rounded-full bg-sp-blue-700 px-5 font-medium text-sp-white hover:bg-sp-blue-900"
+            className="sp-btn inline-flex min-h-12 items-center justify-center bg-sp-blue-700 px-8 font-medium text-sp-white hover:bg-sp-blue-900"
             href={whatsappLink(
               `Hi, I just sent an appointment request on your website for ${when} (${concernLabel(done.concern)}). My name is ${done.name}.`,
             )}
@@ -240,7 +238,7 @@ export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
             Message us on WhatsApp now
           </a>
           <a
-            className="inline-flex min-h-12 items-center justify-center rounded-full border-2 border-sp-blue-700 px-5 font-medium text-sp-blue-900 hover:bg-sp-teal-100"
+            className="sp-btn sp-btn-line inline-flex min-h-12 items-center justify-center px-8 font-medium"
             href={icsFile(done.date, done.time, slotMinutes)}
             download="smart-physio-appointment.ics"
           >
