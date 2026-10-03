@@ -7,6 +7,7 @@ import { clinic } from "@/content/clinic";
 import { routes } from "@/content/routes";
 import { cn } from "@/lib/utils";
 import { ButtonLink } from "./ButtonLink";
+import { Icon } from "./Icon";
 
 const nav = [
   { href: routes.services.path, label: "Services" },
@@ -59,20 +60,20 @@ export function Header() {
               {n.label}
             </Link>
           ))}
-          <ButtonLink href={routes.book.path}>{routes.book.name}</ButtonLink>
+          <ButtonLink href={routes.book.path} icon="calendar">
+            {routes.book.name}
+          </ButtonLink>
         </nav>
 
         <button
           type="button"
-          className="inline-flex min-h-12 min-w-12 items-center justify-center rounded-lg border-2 border-sp-blue-700 text-sp-blue-900 md:hidden"
+          className="inline-flex min-h-12 min-w-12 items-center justify-center rounded-full border-2 border-sp-blue-700 text-sp-blue-900 md:hidden"
           aria-expanded={open}
           aria-controls="mobile-menu"
           aria-label={open ? "Close menu" : "Open menu"}
           onClick={() => setOpen((v) => !v)}
         >
-          <span aria-hidden="true" className="text-xl leading-none">
-            {open ? "✕" : "☰"}
-          </span>
+          <Icon name={open ? "close" : "menu"} className="size-6" />
         </button>
       </div>
 

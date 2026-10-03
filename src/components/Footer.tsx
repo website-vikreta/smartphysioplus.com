@@ -1,15 +1,20 @@
+import Image from "next/image";
 import Link from "next/link";
 import { clinic } from "@/content/clinic";
 import { routes } from "@/content/routes";
-import { formatHours } from "@/lib/format";
+import { formatHours, whatsappLink } from "@/lib/format";
+import { ButtonLink } from "./ButtonLink";
+import { Icon } from "./Icon";
 import { TourLink } from "./TourLink";
 
-const quick = [
-  routes.services,
+const care = [
   routes.physiotherapy,
-  routes.local,
   routes.ortho,
   routes.neuro,
+  routes.services,
+];
+const explore = [
+  routes.local,
   routes.doctor,
   routes.about,
   routes.contact,
@@ -17,48 +22,47 @@ const quick = [
 ];
 const legal = [routes.privacy, routes.terms, routes.disclaimer];
 const social = [
-  { name: "Instagram", href: clinic.social.instagram },
-  { name: "Facebook", href: clinic.social.facebook },
-  { name: "Justdial", href: clinic.social.justdial },
-];
-const link = "text-sp-teal-100 underline hover:text-sp-white";
+  { name: "Instagram", icon: "instagram", href: clinic.social.instagram },
+  { name: "Facebook", icon: "facebook", href: clinic.social.facebook },
+] as const;
+
+const link =
+  "text-sp-teal-100 underline-offset-4 hover:text-sp-white hover:underline";
+const heading = "mb-3 font-display text-base font-semibold text-sp-white";
 
 export function Footer() {
   const { street, locality, city, region, postalCode } = clinic.address;
   return (
-    <footer className="mt-auto bg-sp-blue-900 pb-20 text-sp-white md:pb-0">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-3">
+    <footer className="mt-auto bg-sp-blue-900 pb-20 text-sp-teal-100 md:pb-0">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 md:grid-cols-2 lg:grid-cols-4">
         <div>
-          <p className="font-display text-lg font-semibold">
-            {clinic.brandName}
+          <Link href={routes.home.path} aria-label={`${clinic.brandName} home`}>
+            <Image
+              src="/brand/logo.png"
+              alt=""
+              width={1700}
+              height={380}
+              className="h-14 w-auto rounded-xl bg-sp-white px-3 py-1"
+            />
+          </Link>
+          <p className="mt-4 max-w-xs">
+            {clinic.tagline}. Assessment-led physiotherapy in {locality}, {city}
+            .
           </p>
-          <address className="mt-2 not-italic">
-            {street}
-            <br />
-            {locality}, {city}, {region} {postalCode}
-          </address>
-          <p className="mt-2">
-            <a href={clinic.phone.tel} className={link}>
-              {clinic.phone.display}
-            </a>
-          </p>
-          <p className="mt-2">{formatHours()}</p>
-          <p className="mt-2">
-            <a
-              href={clinic.google.directionsUrl}
-              className={link}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Get directions
-            </a>
-          </p>
+          <ButtonLink
+            href={routes.book.path}
+            variant="light"
+            icon="calendar"
+            className="mt-5"
+          >
+            Book appointment
+          </ButtonLink>
         </div>
 
-        <nav aria-label="Footer">
-          <p className="font-semibold">Explore</p>
-          <ul className="mt-2 space-y-1">
-            {quick.map((r) => (
+        <nav aria-label="Care">
+          <p className={heading}>Our care</p>
+          <ul className="space-y-2">
+            {care.map((r) => (
               <li key={r.path}>
                 <Link href={r.path} className={link}>
                   {r.name}
@@ -68,21 +72,99 @@ export function Footer() {
           </ul>
         </nav>
 
+        <nav aria-label="Footer">
+          <p className={heading}>Explore</p>
+          <ul className="space-y-2">
+            {explore.map((r) => (
+              <li key={r.path}>
+                <Link href={r.path} className={link}>
+                  {r.name}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <TourLink className={`${link} min-h-11 text-left`} />
+            </li>
+          </ul>
+        </nav>
+
         <div>
-          <p className="font-semibold">Follow and legal</p>
-          <ul className="mt-2 space-y-1">
+          <p className={heading}>Visit us</p>
+          <address className="flex gap-2 not-italic">
+            <Icon name="pin" className="mt-1 size-5 shrink-0" />
+            <span>
+              {street}
+              <br />
+              {locality}, {city}, {region} {postalCode}
+            </span>
+          </address>
+          <p className="mt-3 flex gap-2">
+            <Icon name="clock" className="mt-1 size-5 shrink-0" />
+            {formatHours()}
+          </p>
+          <p className="mt-3 flex gap-2">
+            <Icon name="phone" className="mt-1 size-5 shrink-0" />
+            <a href={clinic.phone.tel} className={link}>
+              {clinic.phone.display}
+            </a>
+          </p>
+          <p className="mt-3 flex gap-2">
+            <Icon name="whatsapp" className="mt-1 size-5 shrink-0" />
+            <a
+              href={whatsappLink()}
+              className={link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              WhatsApp us
+            </a>
+          </p>
+          <p className="mt-3 flex gap-2">
+            <Icon name="arrow" className="mt-1 size-5 shrink-0" />
+            <a
+              href={clinic.google.directionsUrl}
+              className={link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Get directions
+            </a>
+          </p>
+          <ul className="mt-4 flex items-center gap-3">
             {social.map((s) => (
               <li key={s.name}>
                 <a
                   href={s.href}
-                  className={link}
+                  aria-label={s.name}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="inline-flex size-11 items-center justify-center rounded-full bg-sp-blue-700 text-sp-white hover:bg-sp-teal-500 hover:text-sp-blue-900"
                 >
-                  {s.name}
+                  <Icon name={s.icon} />
                 </a>
               </li>
             ))}
+            <li>
+              <a
+                href={clinic.social.justdial}
+                className={link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Justdial
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      {/* The 3D spine is procedural. If a CC-BY model replaces it, add its credit line here. */}
+      <div className="border-t border-sp-blue-700">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-4 text-sm md:flex-row">
+          <p>
+            &copy; {new Date().getFullYear()} {clinic.brandName}.{" "}
+            {clinic.tagline}.
+          </p>
+          <ul className="flex flex-wrap gap-4">
             {legal.map((r) => (
               <li key={r.path}>
                 <Link href={r.path} className={link}>
@@ -91,15 +173,8 @@ export function Footer() {
               </li>
             ))}
           </ul>
-          <p className="mt-3">
-            <TourLink className={`${link} min-h-12`} />
-          </p>
-          {/* The 3D spine is procedural. If a CC-BY model replaces it, add its credit line here. */}
         </div>
       </div>
-      <p className="border-t border-sp-blue-700 px-4 py-4 text-center text-sm">
-        &copy; {new Date().getFullYear()} {clinic.brandName}. {clinic.tagline}.
-      </p>
     </footer>
   );
 }
