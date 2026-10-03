@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+:root {
+  --sp-blue-700: #01689c;
+  --sp-blue-900: #013f5f;
+  --sp-teal-500: #1cabb0;
+  --sp-teal-100: #ddf4f5;
+  --sp-ink: #0e1b24;
+  --sp-mist: #f4f9fb;
+  --sp-white: #ffffff;
+  /* Pain hotspot on the 3D spine only. Nowhere else. */
+  --sp-signal: #e8735a;
+}
+
+@theme inline {
+  --color-sp-blue-700: var(--sp-blue-700);
+  --color-sp-blue-900: var(--sp-blue-900);
+  --color-sp-teal-500: var(--sp-teal-500);
+  --color-sp-teal-100: var(--sp-teal-100);
+  --color-sp-ink: var(--sp-ink);
+  --color-sp-mist: var(--sp-mist);
+  --color-sp-white: var(--sp-white);
+  --color-sp-signal: var(--sp-signal);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-sora);
+}
+
+body {
+  background: var(--sp-mist);
+  color: var(--sp-ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display), system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--sp-teal-500);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
