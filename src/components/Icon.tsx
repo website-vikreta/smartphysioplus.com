@@ -71,11 +71,11 @@ export function IconBadge({
   );
 }
 
-// Full-colour brand marks (simple-icons paths). Decorative: pair with a label.
+// Single-colour brand marks (simple-icons paths). They follow the text colour. Decorative: pair with a label.
 const brands = {
-  whatsapp: { path: siWhatsapp.path, fill: "#25D366" },
-  facebook: { path: siFacebook.path, fill: "#0866FF" },
-  instagram: { path: siInstagram.path, fill: "url(#sp-ig)" },
+  whatsapp: siWhatsapp.path,
+  facebook: siFacebook.path,
+  instagram: siInstagram.path,
 };
 
 export type BrandName = keyof typeof brands;
@@ -87,25 +87,14 @@ export function BrandLogo({
   name: BrandName;
   className?: string;
 }) {
-  const b = brands[name];
   return (
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
       className={className}
-      fill={b.fill}
+      fill="currentColor"
     >
-      {name === "instagram" && (
-        <defs>
-          <linearGradient id="sp-ig" x1="0" y1="1" x2="1" y2="0">
-            <stop offset="0" stopColor="#FEDA77" />
-            <stop offset="0.35" stopColor="#F58529" />
-            <stop offset="0.6" stopColor="#DD2A7B" />
-            <stop offset="1" stopColor="#515BD4" />
-          </linearGradient>
-        </defs>
-      )}
-      <path d={b.path} />
+      <path d={brands[name]} />
     </svg>
   );
 }

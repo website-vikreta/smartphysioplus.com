@@ -31,7 +31,7 @@ export function TopBar() {
               rel="noopener noreferrer"
               className={`${item} hover:underline`}
             >
-              <BrandLogo name="whatsapp" className="size-4" />
+              <BrandLogo name="whatsapp" className="size-4 text-sp-teal-100" />
               WhatsApp
             </a>
           </li>

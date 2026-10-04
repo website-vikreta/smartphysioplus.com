@@ -58,7 +58,7 @@ function Tile({
   return (
     <div className={tile}>
       {icon === "whatsapp" ? (
-        <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-sp-white">
+        <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-sp-teal-100 text-sp-blue-700">
           <BrandLogo name="whatsapp" className="size-6" />
         </span>
       ) : (
@@ -110,7 +110,7 @@ export function Footer() {
                   aria-label={s.name}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="sp-tag inline-flex size-12 items-center justify-center bg-sp-white hover:bg-sp-teal-100"
+                  className="sp-tag inline-flex size-12 items-center justify-center bg-sp-white text-sp-blue-700 hover:bg-sp-teal-100"
                 >
                   <BrandLogo name={s.logo} className="size-6" />
                 </a>
