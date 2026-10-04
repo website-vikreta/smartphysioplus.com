@@ -1,5 +1,6 @@
 "use client";
 
+import { PushLayers } from "./ButtonLink";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useCallback, useEffect, useState, useTransition } from "react";
@@ -133,9 +134,9 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={pending}
-        className="sp-btn min-h-12 bg-sp-blue-700 px-8 font-medium text-sp-white hover:bg-sp-blue-900 disabled:opacity-60"
+        className="sp-btn"
       >
-        {pending ? "Sending..." : "Send message"}
+        <PushLayers>{pending ? "Sending..." : "Send message"}</PushLayers>
       </button>
     </form>
   );

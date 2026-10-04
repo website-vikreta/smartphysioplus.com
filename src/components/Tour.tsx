@@ -1,5 +1,6 @@
 "use client";
 
+import { PushLayers } from "./ButtonLink";
 import { useEffect, useState } from "react";
 import { track } from "@/lib/analytics";
 
@@ -80,9 +81,9 @@ export function Tour() {
           type="button"
           autoFocus
           onClick={() => (last ? finish(true) : setStep(step + 1))}
-          className="sp-btn min-h-12 bg-sp-blue-700 px-8 font-medium text-sp-white hover:bg-sp-blue-900"
+          className="sp-btn"
         >
-          {last ? "Done" : "Next"}
+          <PushLayers>{last ? "Done" : "Next"}</PushLayers>
         </button>
         <button
           type="button"
