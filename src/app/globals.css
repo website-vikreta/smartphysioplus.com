@@ -90,6 +90,23 @@ body {
     color: var(--sp-white);
   }
 
+  /* Six-bar equalizer loader, sized by viewport. Bars are blue on a teal tint. */
+  .sp-loader {
+    width: clamp(72px, 20vw, 120px);
+    height: clamp(8px, 2vw, 14px);
+    border-radius: 0 0 6px 6px;
+    background:
+      linear-gradient(var(--sp-blue-700) 50%, #0000 0),
+      linear-gradient(#0000 50%, var(--sp-blue-700) 0),
+      linear-gradient(var(--sp-blue-700) 50%, #0000 0),
+      linear-gradient(#0000 50%, var(--sp-blue-700) 0),
+      linear-gradient(var(--sp-blue-700) 50%, #0000 0),
+      linear-gradient(#0000 50%, var(--sp-blue-700) 0) var(--sp-teal-100);
+    background-size: calc(100% / 6 + 1px) 200%;
+    background-repeat: no-repeat;
+    animation: sp-loader 2s infinite;
+  }
+
   /* Slow drifting colour orbs behind banners. Pure CSS, no markup. */
   .sp-band,
   .sp-dark {
@@ -184,5 +201,71 @@ h3 {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+@keyframes sp-loader {
+  0% {
+    background-position:
+      calc(0 * 100% / 5) 100%,
+      calc(1 * 100% / 5) 0%,
+      calc(2 * 100% / 5) 100%,
+      calc(3 * 100% / 5) 0%,
+      calc(4 * 100% / 5) 100%,
+      calc(5 * 100% / 5) 0%;
+  }
+  16.67% {
+    background-position:
+      calc(0 * 100% / 5) 0%,
+      calc(1 * 100% / 5) 0%,
+      calc(2 * 100% / 5) 100%,
+      calc(3 * 100% / 5) 0%,
+      calc(4 * 100% / 5) 100%,
+      calc(5 * 100% / 5) 0%;
+  }
+  33.33% {
+    background-position:
+      calc(0 * 100% / 5) 0%,
+      calc(1 * 100% / 5) 100%,
+      calc(2 * 100% / 5) 100%,
+      calc(3 * 100% / 5) 0%,
+      calc(4 * 100% / 5) 100%,
+      calc(5 * 100% / 5) 0%;
+  }
+  50% {
+    background-position:
+      calc(0 * 100% / 5) 0%,
+      calc(1 * 100% / 5) 100%,
+      calc(2 * 100% / 5) 0%,
+      calc(3 * 100% / 5) 0%,
+      calc(4 * 100% / 5) 100%,
+      calc(5 * 100% / 5) 0%;
+  }
+  66.67% {
+    background-position:
+      calc(0 * 100% / 5) 0%,
+      calc(1 * 100% / 5) 100%,
+      calc(2 * 100% / 5) 0%,
+      calc(3 * 100% / 5) 100%,
+      calc(4 * 100% / 5) 100%,
+      calc(5 * 100% / 5) 0%;
+  }
+  83.33% {
+    background-position:
+      calc(0 * 100% / 5) 0%,
+      calc(1 * 100% / 5) 100%,
+      calc(2 * 100% / 5) 0%,
+      calc(3 * 100% / 5) 100%,
+      calc(4 * 100% / 5) 0%,
+      calc(5 * 100% / 5) 0%;
+  }
+  100% {
+    background-position:
+      calc(0 * 100% / 5) 0%,
+      calc(1 * 100% / 5) 100%,
+      calc(2 * 100% / 5) 0%,
+      calc(3 * 100% / 5) 100%,
+      calc(4 * 100% / 5) 0%,
+      calc(5 * 100% / 5) 100%;
   }
 }
