@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-// Top-of-page loader. Shows on first load and after any internal link click, hides once the new path renders.
+// Full-width loader line under the navbar (renders inside the sticky header). Shows on first load and after any internal link click, hides once the new path renders.
 export function NavLoader() {
   const pathname = usePathname();
   const [busy, setBusy] = useState(true);
@@ -47,7 +47,7 @@ export function NavLoader() {
     <div
       role="progressbar"
       aria-label="Loading page"
-      className="sp-loader pointer-events-none fixed left-1/2 top-0 z-50 -translate-x-1/2"
+      className="sp-loader pointer-events-none absolute left-0 top-full w-full"
     />
   );
 }

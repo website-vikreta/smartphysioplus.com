@@ -90,21 +90,21 @@ body {
     color: var(--sp-white);
   }
 
-  /* Six-bar equalizer loader, sized by viewport. Bars are blue on a teal tint. */
+  /* Full-width loader line: two rows of bars sliding in opposite directions, like the equalizer it came from. */
   .sp-loader {
-    width: clamp(72px, 20vw, 120px);
-    height: clamp(8px, 2vw, 14px);
-    border-radius: 0 0 6px 6px;
+    height: 8px;
     background:
-      linear-gradient(var(--sp-blue-700) 50%, #0000 0),
-      linear-gradient(#0000 50%, var(--sp-blue-700) 0),
-      linear-gradient(var(--sp-blue-700) 50%, #0000 0),
-      linear-gradient(#0000 50%, var(--sp-blue-700) 0),
-      linear-gradient(var(--sp-blue-700) 50%, #0000 0),
-      linear-gradient(#0000 50%, var(--sp-blue-700) 0) var(--sp-teal-100);
-    background-size: calc(100% / 6 + 1px) 200%;
-    background-repeat: no-repeat;
-    animation: sp-loader 2s infinite;
+      linear-gradient(90deg, var(--sp-blue-700) 50%, #0000 0) 0 0 / 32px 50%
+        repeat-x,
+      linear-gradient(90deg, var(--sp-teal-500) 50%, #0000 0) 0 100% / 32px 50%
+        repeat-x,
+      var(--sp-teal-100);
+    animation: sp-loader 0.8s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sp-loader {
+      animation: none;
+    }
   }
 
   /* Slow drifting colour orbs behind banners. Pure CSS, no markup. */
@@ -205,67 +205,10 @@ h3 {
 }
 
 @keyframes sp-loader {
-  0% {
+  to {
     background-position:
-      calc(0 * 100% / 5) 100%,
-      calc(1 * 100% / 5) 0%,
-      calc(2 * 100% / 5) 100%,
-      calc(3 * 100% / 5) 0%,
-      calc(4 * 100% / 5) 100%,
-      calc(5 * 100% / 5) 0%;
-  }
-  16.67% {
-    background-position:
-      calc(0 * 100% / 5) 0%,
-      calc(1 * 100% / 5) 0%,
-      calc(2 * 100% / 5) 100%,
-      calc(3 * 100% / 5) 0%,
-      calc(4 * 100% / 5) 100%,
-      calc(5 * 100% / 5) 0%;
-  }
-  33.33% {
-    background-position:
-      calc(0 * 100% / 5) 0%,
-      calc(1 * 100% / 5) 100%,
-      calc(2 * 100% / 5) 100%,
-      calc(3 * 100% / 5) 0%,
-      calc(4 * 100% / 5) 100%,
-      calc(5 * 100% / 5) 0%;
-  }
-  50% {
-    background-position:
-      calc(0 * 100% / 5) 0%,
-      calc(1 * 100% / 5) 100%,
-      calc(2 * 100% / 5) 0%,
-      calc(3 * 100% / 5) 0%,
-      calc(4 * 100% / 5) 100%,
-      calc(5 * 100% / 5) 0%;
-  }
-  66.67% {
-    background-position:
-      calc(0 * 100% / 5) 0%,
-      calc(1 * 100% / 5) 100%,
-      calc(2 * 100% / 5) 0%,
-      calc(3 * 100% / 5) 100%,
-      calc(4 * 100% / 5) 100%,
-      calc(5 * 100% / 5) 0%;
-  }
-  83.33% {
-    background-position:
-      calc(0 * 100% / 5) 0%,
-      calc(1 * 100% / 5) 100%,
-      calc(2 * 100% / 5) 0%,
-      calc(3 * 100% / 5) 100%,
-      calc(4 * 100% / 5) 0%,
-      calc(5 * 100% / 5) 0%;
-  }
-  100% {
-    background-position:
-      calc(0 * 100% / 5) 0%,
-      calc(1 * 100% / 5) 100%,
-      calc(2 * 100% / 5) 0%,
-      calc(3 * 100% / 5) 100%,
-      calc(4 * 100% / 5) 0%,
-      calc(5 * 100% / 5) 100%;
+      32px 0,
+      -32px 100%,
+      0 0;
   }
 }

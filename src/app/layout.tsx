@@ -4,7 +4,6 @@ import { Analytics } from "@/components/Analytics";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
-import { NavLoader } from "@/components/NavLoader";
 import { MobileActionBar } from "@/components/MobileActionBar";
 import { TopBar } from "@/components/TopBar";
 import { clinic } from "@/content/clinic";
@@ -34,7 +33,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to content
         </a>
-        <NavLoader />
         <TopBar />
         <Header />
         {children}
