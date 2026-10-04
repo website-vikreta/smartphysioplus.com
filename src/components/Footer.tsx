@@ -5,7 +5,7 @@ import { clinic } from "@/content/clinic";
 import { routes } from "@/content/routes";
 import { formatHours, whatsappLink } from "@/lib/format";
 import { ButtonLink } from "./ButtonLink";
-import { Icon, IconBadge, type IconName } from "./Icon";
+import { BrandLogo, IconBadge, type IconName } from "./Icon";
 import { TourLink } from "./TourLink";
 
 const care = [
@@ -23,8 +23,8 @@ const explore = [
 ];
 const legal = [routes.privacy, routes.terms, routes.disclaimer];
 const social = [
-  { name: "Instagram", icon: "instagram", href: clinic.social.instagram },
-  { name: "Facebook", icon: "facebook", href: clinic.social.facebook },
+  { name: "Instagram", logo: "instagram", href: clinic.social.instagram },
+  { name: "Facebook", logo: "facebook", href: clinic.social.facebook },
 ] as const;
 
 const link = "text-sp-teal-100 transition-colors hover:text-sp-white";
@@ -51,13 +51,19 @@ function Tile({
   title,
   children,
 }: {
-  icon: IconName;
+  icon: IconName | "whatsapp";
   title: string;
   children: ReactNode;
 }) {
   return (
     <div className={tile}>
-      <IconBadge name={icon} className="!size-11 shrink-0" />
+      {icon === "whatsapp" ? (
+        <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-sp-white">
+          <BrandLogo name="whatsapp" className="size-6" />
+        </span>
+      ) : (
+        <IconBadge name={icon} className="!size-11 shrink-0" />
+      )}
       <div>
         <p className="font-display font-semibold text-sp-white">{title}</p>
         <div className="mt-1 text-sm text-sp-teal-100">{children}</div>
@@ -104,9 +110,9 @@ export function Footer() {
                   aria-label={s.name}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="sp-btn inline-flex h-12 w-14 items-center justify-center bg-white/15 text-sp-white hover:bg-sp-white hover:text-sp-blue-900"
+                  className="sp-tag inline-flex size-12 items-center justify-center bg-sp-white hover:bg-sp-teal-100"
                 >
-                  <Icon name={s.icon} />
+                  <BrandLogo name={s.logo} className="size-6" />
                 </a>
               ))}
             </div>
