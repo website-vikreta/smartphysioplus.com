@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { clinic } from "@/content/clinic";
 import { reviews } from "@/content/reviews";
 import { ButtonLink } from "./ButtonLink";
@@ -17,13 +18,31 @@ export function Reviews() {
         <ul className="mt-6 grid gap-5 md:grid-cols-2">
           {reviews.map((r) => (
             <li key={`${r.author}-${r.date}`} className="sp-card sp-card-link">
-              <blockquote>&ldquo;{r.text}&rdquo;</blockquote>
-              <p className="mt-4 text-sm font-semibold text-sp-blue-900">
-                {r.author}
-                <span className="ml-2 font-normal">
-                  Google review, {r.date}
-                </span>
-              </p>
+              <div className="flex items-center gap-3">
+                {r.photo ? (
+                  <Image
+                    src={r.photo}
+                    alt={`${r.author}, patient`}
+                    width={48}
+                    height={48}
+                    className="size-12 shrink-0 rounded-full object-cover"
+                  />
+                ) : (
+                  <span
+                    aria-hidden="true"
+                    className="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-sp-teal-100 font-semibold text-sp-blue-700"
+                  >
+                    {r.author.trim().charAt(0).toUpperCase()}
+                  </span>
+                )}
+                <p className="text-sm font-semibold text-sp-blue-900">
+                  {r.author}
+                  <span className="block font-normal">
+                    Google review, {r.date}
+                  </span>
+                </p>
+              </div>
+              <blockquote className="mt-4">&ldquo;{r.text}&rdquo;</blockquote>
             </li>
           ))}
         </ul>
