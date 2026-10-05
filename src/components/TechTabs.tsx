@@ -41,7 +41,7 @@ export function TechTabs() {
             tabIndex={i === n ? 0 : -1}
             onClick={() => setI(n)}
             className={cn(
-              "sp-btn min-h-12 shrink-0 px-8 font-medium",
+              "sp-tag min-h-12 shrink-0 px-8 font-medium",
               i === n ? "bg-sp-blue-700 text-sp-white" : "sp-btn-line",
             )}
           >

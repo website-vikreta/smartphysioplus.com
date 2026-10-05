@@ -63,24 +63,17 @@ body {
   .sp-rise {
     animation: sp-rise 0.7s ease-out both;
   }
-  /* Sharp slanted button: both sides leaning, no rounding. Outline is clipped, so focus uses an inset ring. */
-  .sp-btn {
-    border-radius: 0;
-    clip-path: polygon(0.8rem 0, 100% 0, calc(100% - 0.8rem) 100%, 0 100%);
+  /* Small rounded tag: filters, tabs, chips, icon links. */
+  .sp-tag {
+    border-radius: 0.5rem;
     transition:
       background-color 0.25s,
-      color 0.25s,
-      transform 0.25s;
+      color 0.25s;
   }
-  .sp-btn:hover {
-    transform: translateY(-2px);
+  .sp-tag:focus-visible {
+    outline: 3px solid var(--sp-teal-500);
+    outline-offset: 2px;
   }
-  .sp-btn:focus-visible {
-    outline: none;
-    box-shadow: inset 0 0 0 3px var(--sp-teal-500);
-    text-decoration: underline;
-  }
-  /* Tinted slanted button, used where the old design had an outlined pill. */
   .sp-btn-line {
     background: rgb(1 104 156 / 0.12);
     color: var(--sp-blue-900);

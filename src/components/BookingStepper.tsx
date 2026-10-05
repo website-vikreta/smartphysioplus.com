@@ -25,6 +25,7 @@ import {
 } from "@/lib/schemas";
 import { bookableDays, formatSlot, timesFor, toInstant } from "@/lib/slots";
 import { cn } from "@/lib/utils";
+import { PushLayers } from "./ButtonLink";
 import { Turnstile } from "./Turnstile";
 
 const STORAGE = "sp_booking";
@@ -48,7 +49,7 @@ const concernLabel = (c: Concern) =>
 
 const pill = (on: boolean) =>
   cn(
-    "sp-btn min-h-12 px-6 font-medium",
+    "sp-tag min-h-12 px-6 font-medium",
     on ? "bg-sp-blue-700 text-sp-white" : "sp-btn-line",
   );
 const input =
@@ -228,21 +229,21 @@ export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
         </p>
         <div className="mt-4 flex flex-col gap-3 sm:flex-row">
           <a
-            className="sp-btn inline-flex min-h-12 items-center justify-center bg-sp-blue-700 px-8 font-medium text-sp-white hover:bg-sp-blue-900"
+            className="sp-btn"
             href={whatsappLink(
               `Hi, I just sent an appointment request on your website for ${when} (${concernLabel(done.concern)}). My name is ${done.name}.`,
             )}
             target="_blank"
             rel="noopener noreferrer"
           >
-            Message us on WhatsApp now
+            <PushLayers>Message us on WhatsApp now</PushLayers>
           </a>
           <a
-            className="sp-btn sp-btn-line inline-flex min-h-12 items-center justify-center px-8 font-medium"
+            className="sp-btn sp-btn-alt"
             href={icsFile(done.date, done.time, slotMinutes)}
             download="smart-physio-appointment.ics"
           >
-            Add to calendar (pending confirmation)
+            <PushLayers>Add to calendar (pending confirmation)</PushLayers>
           </a>
         </div>
       </div>
@@ -497,23 +498,23 @@ export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
         {step > 0 && (
           <button
             type="button"
-            className={pill(false)}
+            className="sp-btn sp-btn-alt"
             onClick={() => setStep((s) => s - 1)}
           >
-            Back
+            <PushLayers>Back</PushLayers>
           </button>
         )}
         {step < TITLES.length - 1 ? (
-          <button type="button" className={pill(true)} onClick={next}>
-            Next
+          <button type="button" className="sp-btn" onClick={next}>
+            <PushLayers>Next</PushLayers>
           </button>
         ) : (
           <button
             type="submit"
             disabled={pending}
-            className={cn(pill(true), "disabled:opacity-60")}
+            className="sp-btn"
           >
-            {pending ? "Sending..." : "Send request"}
+            <PushLayers>{pending ? "Sending..." : "Send request"}</PushLayers>
           </button>
         )}
       </div>
