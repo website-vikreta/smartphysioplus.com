@@ -21,6 +21,7 @@ const idle = (cb: () => void) =>
 export function SpinePanel() {
   const box = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState<RegionId | null>(null);
+  const [hover, setHover] = useState<string | null>(null);
   const [load3d, setLoad3d] = useState(false);
   const [visible, setVisible] = useState(false);
   const [interacted, setInteracted] = useState(false);
@@ -71,6 +72,7 @@ export function SpinePanel() {
           <SpineScene
             selected={selected}
             onSelect={select}
+            onHover={setHover}
             active={visible}
             autoRotate={!interacted && !reduceMotion}
             onInteract={() => setInteracted(true)}
@@ -78,6 +80,13 @@ export function SpinePanel() {
         ) : (
           <SpinePoster selected={selected} />
         )}
+        <p className="pointer-events-none absolute left-3 top-3 rounded-lg bg-sp-white/90 px-3 py-1 text-sm text-sp-blue-900">
+          {hover ?? "Drag to turn · tap a region"}
+        </p>
+        <p className="pointer-events-none absolute bottom-3 left-3 rounded-lg bg-sp-white/90 px-3 py-1 text-xs text-sp-blue-900">
+          <span className="mr-1 inline-block size-2 rounded-full bg-sp-teal-500" />
+          Spinal cord and nerves
+        </p>
       </div>
       <p className="sr-only">
         A 3D model of the human spine, from the neck down to the tailbone. Use
@@ -95,7 +104,7 @@ export function SpinePanel() {
               aria-pressed={selected === r.id}
               onClick={() => select(r.id)}
               className={cn(
-                "sp-btn min-h-12 px-6 font-medium",
+                "sp-tag min-h-12 px-6 font-medium",
                 selected === r.id
                   ? "bg-sp-blue-700 text-sp-white"
                   : "sp-btn-line",
@@ -109,15 +118,35 @@ export function SpinePanel() {
 
       <div
         aria-live="polite"
-        className="mt-4 min-h-32 rounded-2xl border border-sp-teal-100 bg-sp-white/80 p-4 backdrop-blur"
+        className="mt-4 min-h-40 rounded-2xl border border-sp-teal-100 bg-sp-white/80 p-4 backdrop-blur"
       >
         {region ? (
           <>
-            <p className="font-semibold text-sp-blue-900">{region.name}</p>
-            <p className="mt-1 text-sm">
-              Common problems: {region.problems.join(", ")}.
+            <p className="font-semibold text-sp-blue-900">
+              {region.name}{" "}
+              <span className="sp-tag ml-1 inline-block bg-sp-teal-100 px-2 py-0.5 text-xs font-medium">
+                {region.levels}
+              </span>
             </p>
+            <p className="mt-1 text-sm">{region.about}</p>
+            <p className="mt-2 text-sm font-medium text-sp-blue-900">
+              Common problems we see
+            </p>
+            <ul className="mt-1 flex flex-wrap gap-2 text-sm">
+              {region.problems.map((p) => (
+                <li key={p} className="sp-tag bg-sp-mist px-2 py-0.5">
+                  {p}
+                </li>
+              ))}
+            </ul>
             <p className="mt-1 text-sm">How we usually help: {region.help}</p>
+            <p className="mt-2 text-xs">
+              General information, not a diagnosis.{" "}
+              <Link href={routes.disclaimer.path} className="underline">
+                Read the disclaimer
+              </Link>
+              .
+            </p>
             <div className="mt-3 flex flex-wrap gap-2">
               <Link
                 href={region.treatHref}

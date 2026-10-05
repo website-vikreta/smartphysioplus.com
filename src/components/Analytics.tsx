@@ -2,19 +2,24 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
+import Script from "next/script";
 import { useEffect, useState } from "react";
+import { clinic } from "@/content/clinic";
 import { track } from "@/lib/analytics";
 
 const KEY = "sp_consent";
 const gaId = process.env.NEXT_PUBLIC_GA_ID;
+const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID;
 
-// Consent-aware analytics. GA4 and Vercel Analytics load only after "Accept".
+// Consent-aware analytics. GA4, Microsoft Clarity and Vercel Analytics load only after "Accept".
 // Also tracks call / WhatsApp / directions clicks with one document listener.
 export function Analytics() {
   const [consent, setConsent] = useState<"yes" | "no" | null>(null);
-  const [asked, setAsked] = useState(true);
+  const [asked, setAsked] = useState(true); // stays true off production, so no banner
 
   useEffect(() => {
+    // Production host only: no banner and no tracking on stage, review, netlify or localhost.
+    if (location.host !== new URL(clinic.domain).host) return;
     let saved: string | null = null;
     try {
       saved = localStorage.getItem(KEY);
@@ -51,8 +56,13 @@ export function Analytics() {
   return (
     <>
       {consent === "yes" && gaId && <GoogleAnalytics gaId={gaId} />}
+      {consent === "yes" && clarityId && (
+        <Script id="clarity" strategy="afterInteractive">
+          {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${clarityId}");`}
+        </Script>
+      )}
       {consent === "yes" && <VercelAnalytics />}
-      {!asked && gaId && (
+      {!asked && (gaId || clarityId) && (
         <div
           role="region"
           aria-label="Analytics consent"

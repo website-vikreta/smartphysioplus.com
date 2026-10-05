@@ -33,7 +33,7 @@ export default function OrthoPage() {
             <li key={c.id}>
               <a
                 href={`#${c.id}`}
-                className="sp-btn sp-btn-line inline-flex min-h-11 items-center px-5 text-sm"
+                className="sp-tag sp-btn-line inline-flex min-h-11 items-center px-5 text-sm"
               >
                 {c.title}
               </a>

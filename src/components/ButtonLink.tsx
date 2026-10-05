@@ -4,12 +4,23 @@ import { cn } from "@/lib/utils";
 import { Icon, type IconName } from "./Icon";
 
 const styles = {
-  // White on blue-700 = 6:1 contrast. Teal is reserved for focus, tints and accents.
-  primary: "bg-sp-blue-700 text-sp-white hover:bg-sp-blue-900",
-  secondary: "sp-btn-line",
+  // White on blue-900 edge/blue-700 face = 6:1+ contrast. Teal is reserved for focus and accents.
+  primary: "",
+  secondary: "sp-btn-alt",
   // For dark blue surfaces.
-  light: "bg-sp-white text-sp-blue-900 hover:bg-sp-teal-100",
+  light: "sp-btn-white",
 };
+
+/** Face + edge + base layers for .sp-btn. Use inside any element with that class. */
+export function PushLayers({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <span className="sp-btn-top">{children}</span>
+      <span className="sp-btn-bottom" />
+      <span className="sp-btn-base" />
+    </>
+  );
+}
 
 type Props = ComponentProps<typeof Link> & {
   variant?: keyof typeof styles;
@@ -26,14 +37,16 @@ export function ButtonLink({
   return (
     <Link
       className={cn(
-        "inline-flex min-h-12 items-center justify-center gap-2 sp-btn px-8 py-2 font-medium",
+        "sp-btn",
         styles[variant],
         className,
       )}
       {...props}
     >
-      {icon && <Icon name={icon} />}
-      {children}
+      <PushLayers>
+        {icon && <Icon name={icon} />}
+        {children}
+      </PushLayers>
     </Link>
   );
 }

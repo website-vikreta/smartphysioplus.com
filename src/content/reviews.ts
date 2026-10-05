@@ -1,6 +1,12 @@
 // Fill only with reviews the client has permission to publish. Empty shows the Google reviews button.
 // Copied word for word from the clinic's Google Maps listing (Oct 2026), shared by the clinic owner.
-export type Review = { author: string; text: string; date: string };
+// photo: optional path under /images/reviews/, only with the patient's written consent. Without it the card shows initials.
+export type Review = {
+  author: string;
+  text: string;
+  date: string;
+  photo?: string;
+};
 export const reviews: Review[] = [
   {
     author: "Dakshesh Deo",

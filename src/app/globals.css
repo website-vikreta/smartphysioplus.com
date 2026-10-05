@@ -63,24 +63,17 @@ body {
   .sp-rise {
     animation: sp-rise 0.7s ease-out both;
   }
-  /* Sharp slanted button: both sides leaning, no rounding. Outline is clipped, so focus uses an inset ring. */
-  .sp-btn {
-    border-radius: 0;
-    clip-path: polygon(0.8rem 0, 100% 0, calc(100% - 0.8rem) 100%, 0 100%);
+  /* Small rounded tag: filters, tabs, chips, icon links. */
+  .sp-tag {
+    border-radius: 0.5rem;
     transition:
       background-color 0.25s,
-      color 0.25s,
-      transform 0.25s;
+      color 0.25s;
   }
-  .sp-btn:hover {
-    transform: translateY(-2px);
+  .sp-tag:focus-visible {
+    outline: 3px solid var(--sp-teal-500);
+    outline-offset: 2px;
   }
-  .sp-btn:focus-visible {
-    outline: none;
-    box-shadow: inset 0 0 0 3px var(--sp-teal-500);
-    text-decoration: underline;
-  }
-  /* Tinted slanted button, used where the old design had an outlined pill. */
   .sp-btn-line {
     background: rgb(1 104 156 / 0.12);
     color: var(--sp-blue-900);
@@ -88,6 +81,113 @@ body {
   .sp-btn-line:hover {
     background: var(--sp-blue-700);
     color: var(--sp-white);
+  }
+
+  /* 3D push button (ButtonLink / PushLayers). Colours come from --sp-face, --sp-edge, --sp-fg. */
+  .sp-btn {
+    --sp-face: radial-gradient(var(--sp-blue-700), var(--sp-blue-900));
+    --sp-edge: #012a40;
+    --sp-fg: var(--sp-white);
+    position: relative;
+    display: inline-flex;
+    appearance: none;
+    border: 0;
+    padding: 0 8px 12px;
+    min-width: 9rem;
+    background: transparent;
+    font: inherit;
+    font-weight: 500;
+    color: var(--sp-fg);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .sp-btn-alt {
+    --sp-face: radial-gradient(var(--sp-teal-100), #bfe8ea);
+    --sp-edge: var(--sp-blue-700);
+    --sp-fg: var(--sp-blue-900);
+  }
+  .sp-btn-white {
+    --sp-face: radial-gradient(#fff, var(--sp-teal-100));
+    --sp-edge: var(--sp-teal-500);
+    --sp-fg: var(--sp-blue-900);
+  }
+  .sp-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .sp-btn:focus-visible {
+    outline: 3px solid var(--sp-teal-500);
+    outline-offset: 2px;
+    border-radius: 12px;
+  }
+  .sp-btn-top {
+    position: relative;
+    z-index: 0;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 8px 16px;
+    transition: transform 0.2s;
+    user-select: none;
+  }
+  .sp-btn:not(:disabled):active .sp-btn-top {
+    transform: translateY(6px);
+  }
+  .sp-btn-top::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    border-radius: 4px;
+    background-image: var(--sp-face);
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.2),
+      0 1px 2px 1px rgb(255 255 255 / 0.2);
+    transition:
+      border-radius 0.2s,
+      inset 0.2s;
+  }
+  .sp-btn:not(:disabled):active .sp-btn-top::after {
+    border-radius: 6px;
+    inset: 0 -2px;
+  }
+  .sp-btn-bottom {
+    position: absolute;
+    z-index: -1;
+    bottom: 4px;
+    left: 4px;
+    width: calc(100% - 8px);
+    height: calc(100% - 10px);
+    padding-top: 6px;
+    box-sizing: content-box;
+    border-radius: 8px / 16px 16px 8px 8px;
+    background-color: var(--sp-edge);
+    box-shadow:
+      0 2px 3px rgb(0 0 0 / 0.5),
+      inset 0 -1px 3px 3px rgb(0 0 0 / 0.4);
+    transition:
+      border-radius 0.2s,
+      padding-top 0.2s;
+  }
+  .sp-btn:not(:disabled):active .sp-btn-bottom {
+    border-radius: 10px 10px 8px 8px / 8px;
+    padding-top: 0;
+  }
+  .sp-btn-base {
+    position: absolute;
+    z-index: -2;
+    top: 4px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 4px);
+    border-radius: 12px;
+    background-color: rgb(0 0 0 / 0.15);
+    box-shadow:
+      0 1px 1px rgb(255 255 255 / 0.75),
+      inset 0 2px 2px rgb(0 0 0 / 0.25);
   }
 
   /* Slow drifting colour orbs behind banners. Pure CSS, no markup. */
