@@ -5,182 +5,246 @@ import { Canvas, invalidate, useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import type { RegionId } from "@/content/regions";
+import {
+  STEP,
+  TOTAL,
+  bodyH,
+  bodyW,
+  levelLabel,
+  levelName,
+  regionOf,
+  tiltAt,
+  yAt,
+  zAt,
+} from "@/lib/spine";
 
-// Procedural spine: 7 cervical, 12 thoracic, 5 lumbar vertebrae, sacrum and coccyx on a natural S-curve.
-// (promptP0.md section 9 fallback; swap for a CC-BY GLB later and record it in PLACEHOLDERS.md.)
-const COUNTS = { cervical: 7, thoracic: 12, lumbar: 5 } as const;
-const TOTAL = 24;
-const TOP = 2.5;
-const BOTTOM = -2.0;
-
-const regionOf = (i: number): RegionId =>
-  i < COUNTS.cervical
-    ? "cervical"
-    : i < COUNTS.cervical + COUNTS.thoracic
-      ? "thoracic"
-      : "lumbar";
-
-const yAt = (t: number) => TOP + (BOTTOM - TOP) * t;
-const zAt = (t: number) => 0.32 * Math.sin(2 * Math.PI * (t * 1.1));
-const slopeAt = (t: number) => {
-  const e = 0.001;
-  return Math.atan2(zAt(t + e) - zAt(t - e), yAt(t - e) - yAt(t + e));
-};
-
-const BONE = "#efe9df";
+// Procedural spine: 24 vertebrae (body, disc, canal ring, spinous and transverse processes), sacrum, coccyx,
+// and a spinal cord that ends near L1 with the nerve roots running on below it. (promptP0.md section 9 fallback.)
 const SIGNAL = "#e8735a";
 
-function Vertebra({ index, lit }: { index: number; lit: boolean }) {
-  const t = index / (TOTAL - 1);
-  const s = 0.55 + 0.5 * t;
+const unitCyl = new THREE.CylinderGeometry(1, 1, 1, 28);
+const unitBox = new THREE.BoxGeometry(1, 1, 1);
+const ring = new THREE.TorusGeometry(1, 0.2, 8, 24);
+
+function useMats(lit: boolean) {
+  return useMemo(
+    () => ({
+      bone: new THREE.MeshPhysicalMaterial({
+        color: lit ? SIGNAL : "#efe9df",
+        emissive: lit ? SIGNAL : "#000000",
+        emissiveIntensity: lit ? 0.4 : 0,
+        clearcoat: 0.25,
+        roughness: 0.55,
+      }),
+      disc: new THREE.MeshPhysicalMaterial({
+        color: lit ? "#f2a291" : "#8fc4cb",
+        roughness: 0.35,
+      }),
+    }),
+    [lit],
+  );
+}
+
+type Hover = (label: string | null) => void;
+
+// Where the vertebral canal sits behind the body, in local z.
+const canalZ = (i: number) => -(bodyW(i) * 0.8 + bodyW(i) * 0.5);
+
+function hit(
+  id: RegionId,
+  label: string,
+  onSelect: (id: RegionId) => void,
+  onHover: Hover,
+) {
+  return {
+    onPointerOver: (e: { stopPropagation: () => void }) => {
+      e.stopPropagation();
+      document.body.style.cursor = "pointer";
+      onHover(label);
+      onSelect(id);
+    },
+    onPointerOut: () => {
+      document.body.style.cursor = "";
+      onHover(null);
+    },
+    onClick: (e: { stopPropagation: () => void }) => {
+      e.stopPropagation();
+      onSelect(id);
+    },
+  };
+}
+
+function Vertebra({
+  index,
+  lit,
+  onSelect,
+  onHover,
+}: {
+  index: number;
+  lit: boolean;
+  onSelect: (id: RegionId) => void;
+  onHover: Hover;
+}) {
+  const { bone, disc } = useMats(lit);
+  const w = bodyW(index);
+  const h = bodyH(index);
+  const gap = STEP - h;
+  const r = regionOf(index);
+  const cz = canalZ(index);
+  const rr = w * 0.5; // canal ring radius
+  const spLen = r === "cervical" ? 0.1 : r === "thoracic" ? 0.24 : 0.17;
+  const spTilt = r === "thoracic" ? -0.65 : r === "cervical" ? -0.15 : 0;
+  const tpLen = r === "cervical" ? 0.09 : r === "thoracic" ? 0.15 : 0.19;
+  // Spinous process starts at the back of the ring and points back (and down in the upper back).
+  const spZ = cz - rr - (spLen / 2) * Math.cos(spTilt);
+  const spY = (spLen / 2) * Math.sin(spTilt);
   return (
     <group
-      position={[0, yAt(t), zAt(t)]}
-      rotation={[slopeAt(t), 0, 0]}
-      scale={s}
+      position={[0, yAt(index), zAt(index)]}
+      rotation={[tiltAt(index), 0, 0]}
+      {...hit(
+        r,
+        `${levelLabel(index)} · ${levelName(index)}`,
+        onSelect,
+        onHover,
+      )}
     >
-      <mesh>
-        <cylinderGeometry args={[0.24, 0.26, 0.15, 20]} />
-        <meshPhysicalMaterial
-          color={lit ? SIGNAL : BONE}
-          emissive={lit ? SIGNAL : "#000000"}
-          emissiveIntensity={lit ? 0.45 : 0}
-          clearcoat={0.3}
-          roughness={0.5}
+      <mesh geometry={unitCyl} material={bone} scale={[w, h, w * 0.8]} />
+      <mesh
+        geometry={unitCyl}
+        material={disc}
+        position={[0, -(h / 2 + gap / 2), 0]}
+        scale={[w * 1.03, gap, w * 0.83]}
+      />
+      <mesh
+        geometry={ring}
+        material={bone}
+        position={[0, 0, cz]}
+        rotation={[Math.PI / 2, 0, 0]}
+        scale={[rr, rr, h * 0.9]}
+      />
+      <mesh
+        geometry={unitBox}
+        material={bone}
+        position={[0, spY, spZ]}
+        rotation={[spTilt, 0, 0]}
+        scale={[0.04, 0.05, spLen]}
+      />
+      {[-1, 1].map((s) => (
+        <mesh
+          key={s}
+          geometry={unitBox}
+          material={bone}
+          position={[s * (rr + tpLen / 2), 0, cz + 0.02]}
+          scale={[tpLen, 0.035, 0.05]}
         />
-      </mesh>
-      <mesh position={[0, 0, -0.3]}>
-        <boxGeometry args={[0.08, 0.12, 0.22]} />
-        <meshPhysicalMaterial
-          color={lit ? SIGNAL : BONE}
-          emissive={lit ? SIGNAL : "#000000"}
-          emissiveIntensity={lit ? 0.45 : 0}
-          roughness={0.5}
-        />
-      </mesh>
-      <mesh position={[0, 0, -0.16]}>
-        <boxGeometry args={[0.7, 0.07, 0.08]} />
-        <meshPhysicalMaterial
-          color={lit ? SIGNAL : BONE}
-          emissive={lit ? SIGNAL : "#000000"}
-          emissiveIntensity={lit ? 0.45 : 0}
-          roughness={0.5}
-        />
-      </mesh>
+      ))}
     </group>
   );
 }
 
-function Sacrum({ lit }: { lit: boolean }) {
-  const t = 1.12;
+function Sacrum({
+  lit,
+  onSelect,
+  onHover,
+}: {
+  lit: boolean;
+  onSelect: (id: RegionId) => void;
+  onHover: Hover;
+}) {
+  const { bone } = useMats(lit);
+  const x = 24.9;
+  const tail = [25.9, 26.7, 27.3];
   return (
-    <group position={[0, yAt(t) - 0.05, zAt(1) - 0.05]} rotation={[0.35, 0, 0]}>
-      <mesh>
-        <coneGeometry args={[0.38, 0.75, 4]} />
-        <meshPhysicalMaterial
-          color={lit ? SIGNAL : BONE}
-          emissive={lit ? SIGNAL : "#000000"}
-          emissiveIntensity={lit ? 0.45 : 0}
-          clearcoat={0.3}
-          roughness={0.5}
-        />
+    <group {...hit("sacral", "Sacrum and tailbone", onSelect, onHover)}>
+      <mesh
+        material={bone}
+        position={[0, yAt(x), zAt(x)]}
+        rotation={[tiltAt(x), Math.PI / 4, 0]}
+        scale={[1, 1, 0.5]}
+      >
+        <cylinderGeometry args={[0.36, 0.1, 0.78, 4]} />
       </mesh>
-      <mesh position={[0, -0.5, 0.05]} rotation={[0.2, 0, 0]}>
-        <coneGeometry args={[0.1, 0.35, 8]} />
-        <meshPhysicalMaterial
-          color={lit ? SIGNAL : BONE}
-          emissive={lit ? SIGNAL : "#000000"}
-          emissiveIntensity={lit ? 0.45 : 0}
-          roughness={0.5}
+      {tail.map((t, k) => (
+        <mesh
+          key={t}
+          geometry={unitCyl}
+          material={bone}
+          position={[0, yAt(t), zAt(t)]}
+          rotation={[tiltAt(t), 0, 0]}
+          scale={[0.07 - k * 0.015, 0.16, 0.06 - k * 0.012]}
         />
-      </mesh>
+      ))}
     </group>
   );
 }
+
+// Position in the canal at spine index x, following the local tilt.
+const canalPoint = (x: number, lateral = 0) => {
+  const i = Math.min(Math.max(Math.round(x), 0), TOTAL - 1);
+  const off = canalZ(i);
+  const a = tiltAt(x);
+  return new THREE.Vector3(
+    lateral,
+    yAt(x) + off * Math.sin(a),
+    zAt(x) + off * Math.cos(a),
+  );
+};
 
 function Cord() {
-  const geometry = useMemo(() => {
-    const pts = Array.from({ length: 30 }, (_, i) => {
-      const t = i / 29;
-      return new THREE.Vector3(0, yAt(t), zAt(t) - 0.1);
-    });
-    return new THREE.TubeGeometry(
-      new THREE.CatmullRomCurve3(pts),
-      80,
-      0.045,
-      10,
-      false,
-    );
+  const { cord, roots } = useMemo(() => {
+    const tube = (from: number, to: number, lat: number, rad: number) => {
+      const n = Math.ceil((to - from) * 2) + 1;
+      const pts = Array.from({ length: n }, (_, k) =>
+        canalPoint(from + ((to - from) * k) / (n - 1), lat),
+      );
+      return new THREE.TubeGeometry(
+        new THREE.CatmullRomCurve3(pts),
+        n * 4,
+        rad,
+        8,
+        false,
+      );
+    };
+    // The cord ends near L1/L2 (index 19); below it the nerve roots run on as the cauda equina.
+    return {
+      cord: tube(-0.5, 19.6, 0, 0.04),
+      roots: [-0.05, -0.03, -0.01, 0.01, 0.03, 0.05].map((l) =>
+        tube(19.6, 24.3, l, 0.008),
+      ),
+    };
   }, []);
   return (
-    <mesh geometry={geometry}>
-      <meshStandardMaterial
-        color="#1cabb0"
-        emissive="#1cabb0"
-        emissiveIntensity={0.7}
-      />
-    </mesh>
-  );
-}
-
-// Invisible capsules along the spine axis so regions are clickable even without per-vertebra meshes.
-const ZONES: { id: RegionId; from: number; to: number }[] = [
-  { id: "cervical", from: 0, to: COUNTS.cervical - 1 },
-  {
-    id: "thoracic",
-    from: COUNTS.cervical,
-    to: COUNTS.cervical + COUNTS.thoracic - 1,
-  },
-  { id: "lumbar", from: COUNTS.cervical + COUNTS.thoracic, to: TOTAL - 1 },
-];
-
-function HitZone({
-  id,
-  from,
-  to,
-  onSelect,
-}: {
-  id: RegionId;
-  from: number;
-  to: number;
-  onSelect: (id: RegionId) => void;
-}) {
-  const t0 = from / (TOTAL - 1);
-  const t1 = to / (TOTAL - 1);
-  const mid = (t0 + t1) / 2;
-  const length = Math.abs(yAt(t1) - yAt(t0));
-  return (
-    <mesh
-      position={[0, yAt(mid), zAt(mid)]}
-      onPointerOver={() => onSelect(id)}
-      onClick={() => onSelect(id)}
-    >
-      <capsuleGeometry args={[0.55, length, 4, 12]} />
-      <meshBasicMaterial transparent opacity={0} depthWrite={false} />
-    </mesh>
-  );
-}
-
-function SacralZone({ onSelect }: { onSelect: (id: RegionId) => void }) {
-  return (
-    <mesh
-      position={[0, yAt(1.12) - 0.2, zAt(1)]}
-      onPointerOver={() => onSelect("sacral")}
-      onClick={() => onSelect("sacral")}
-    >
-      <capsuleGeometry args={[0.5, 0.6, 4, 12]} />
-      <meshBasicMaterial transparent opacity={0} depthWrite={false} />
-    </mesh>
+    <group>
+      <mesh geometry={cord}>
+        <meshStandardMaterial
+          color="#1cabb0"
+          emissive="#1cabb0"
+          emissiveIntensity={0.6}
+        />
+      </mesh>
+      {roots.map((g, k) => (
+        <mesh key={k} geometry={g}>
+          <meshStandardMaterial
+            color="#7fd3d6"
+            emissive="#1cabb0"
+            emissiveIntensity={0.4}
+          />
+        </mesh>
+      ))}
+    </group>
   );
 }
 
 function Rig({
   selected,
   onSelect,
+  onHover,
   autoRotate,
 }: {
   selected: RegionId | null;
   onSelect: (id: RegionId) => void;
+  onHover: Hover;
   autoRotate: boolean;
 }) {
   const group = useRef<THREE.Group>(null);
@@ -191,16 +255,22 @@ function Rig({
     }
   });
   return (
-    <group ref={group}>
+    <group ref={group} position={[0, -0.1, 0]} rotation={[0, 1.1, 0]}>
       {Array.from({ length: TOTAL }, (_, i) => (
-        <Vertebra key={i} index={i} lit={selected === regionOf(i)} />
+        <Vertebra
+          key={i}
+          index={i}
+          lit={selected === regionOf(i)}
+          onSelect={onSelect}
+          onHover={onHover}
+        />
       ))}
-      <Sacrum lit={selected === "sacral"} />
+      <Sacrum
+        lit={selected === "sacral"}
+        onSelect={onSelect}
+        onHover={onHover}
+      />
       <Cord />
-      {ZONES.map((z) => (
-        <HitZone key={z.id} {...z} onSelect={onSelect} />
-      ))}
-      <SacralZone onSelect={onSelect} />
     </group>
   );
 }
@@ -208,12 +278,14 @@ function Rig({
 export default function SpineScene({
   selected,
   onSelect,
+  onHover,
   active,
   autoRotate,
   onInteract,
 }: {
   selected: RegionId | null;
   onSelect: (id: RegionId) => void;
+  onHover: Hover;
   active: boolean;
   autoRotate: boolean;
   onInteract: () => void;
@@ -222,7 +294,7 @@ export default function SpineScene({
     <Canvas
       frameloop={active ? "demand" : "never"}
       dpr={[1, 1.75]}
-      camera={{ position: [0, 0, 7], fov: 35 }}
+      camera={{ position: [0, 0, 7.2], fov: 35 }}
       onPointerDown={onInteract}
     >
       <ambientLight intensity={0.9} />
@@ -235,7 +307,12 @@ export default function SpineScene({
         speed={1.4}
         snap={false}
       >
-        <Rig selected={selected} onSelect={onSelect} autoRotate={autoRotate} />
+        <Rig
+          selected={selected}
+          onSelect={onSelect}
+          onHover={onHover}
+          autoRotate={autoRotate}
+        />
       </PresentationControls>
     </Canvas>
   );
