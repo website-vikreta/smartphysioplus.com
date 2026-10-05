@@ -2,7 +2,7 @@ import { clinic } from "@/content/clinic";
 import { routes } from "@/content/routes";
 import { whatsappLink } from "@/lib/format";
 import { ButtonLink } from "./ButtonLink";
-import { Icon } from "./Icon";
+import { BrandLogo, Icon } from "./Icon";
 
 // Reused at the end of every indexable page.
 export function CtaBand() {
@@ -26,10 +26,10 @@ export function CtaBand() {
           <ButtonLink
             href={whatsappLink()}
             variant="light"
-            icon="whatsapp"
             target="_blank"
             rel="noopener noreferrer"
           >
+            <BrandLogo name="whatsapp" className="size-5" />
             WhatsApp
           </ButtonLink>
         </div>
