@@ -143,8 +143,8 @@ export default function Home() {
     <>
       <main id="main" className="flex-1">
         <section className="sp-band">
-          <div className="mx-auto grid max-w-6xl gap-10 px-4 py-10 md:grid-cols-2 md:items-center md:py-16">
-            <div className="sp-rise">
+          <div className="mx-auto grid max-w-6xl gap-10 px-4 py-10 md:grid-cols-2 md:items-start md:py-16">
+            <div className="sp-rise md:pt-8">
               <h1 className="text-4xl font-bold text-sp-blue-900 md:text-5xl">
                 Back, neck or joint pain? Get a clear treatment plan in
                 Balewadi.
@@ -238,7 +238,7 @@ export default function Home() {
                       <li key={i.name}>
                         <Link
                           href={i.href}
-                          className="sp-btn sp-btn-line inline-flex min-h-11 items-center px-5 text-sm"
+                          className="sp-tag sp-btn-line inline-flex min-h-11 items-center px-5 text-sm"
                         >
                           {i.name}
                         </Link>
