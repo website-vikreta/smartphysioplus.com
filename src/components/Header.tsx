@@ -2,10 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { clinic } from "@/content/clinic";
 import { routes } from "@/content/routes";
-import { cn } from "@/lib/utils";
 import { ButtonLink } from "./ButtonLink";
 import { Icon } from "./Icon";
 
@@ -18,24 +17,11 @@ const nav = [
 ];
 
 export function Header() {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   return (
     <header className="sticky top-0 z-40 border-b border-sp-teal-100 bg-sp-white/95 backdrop-blur">
-      <div
-        className={cn(
-          "mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 transition-[padding] duration-200",
-          scrolled ? "py-1" : "py-3",
-        )}
-      >
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
         <Link href={routes.home.path} aria-label={`${clinic.brandName} home`}>
           <Image
             src="/brand/logo.png"
@@ -43,10 +29,7 @@ export function Header() {
             width={1700}
             height={380}
             priority
-            className={cn(
-              "w-auto transition-[height] duration-200",
-              scrolled ? "h-10" : "h-14",
-            )}
+            className="h-14 w-auto"
           />
         </Link>
 
