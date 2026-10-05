@@ -238,7 +238,7 @@ export default function Home() {
                       <li key={i.name}>
                         <Link
                           href={i.href}
-                          className="sp-btn sp-btn-line inline-flex min-h-11 items-center px-5 text-sm"
+                          className="sp-tag sp-btn-line inline-flex min-h-11 items-center px-5 text-sm"
                         >
                           {i.name}
                         </Link>

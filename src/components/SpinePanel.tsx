@@ -95,7 +95,7 @@ export function SpinePanel() {
               aria-pressed={selected === r.id}
               onClick={() => select(r.id)}
               className={cn(
-                "sp-btn min-h-12 px-6 font-medium",
+                "sp-tag min-h-12 px-6 font-medium",
                 selected === r.id
                   ? "bg-sp-blue-700 text-sp-white"
                   : "sp-btn-line",
