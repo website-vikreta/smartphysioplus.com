@@ -1,5 +1,6 @@
 "use client";
 
+import { NavLoader } from "./NavLoader";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -21,7 +22,13 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-sp-teal-100 bg-sp-white/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
+      <NavLoader />
+      <div
+        className={cn(
+          "mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 transition-[padding] duration-200",
+          scrolled ? "py-1" : "py-3",
+        )}
+      >
         <Link href={routes.home.path} aria-label={`${clinic.brandName} home`}>
           <Image
             src="/brand/logo.png"
