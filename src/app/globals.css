@@ -83,111 +83,21 @@ body {
     color: var(--sp-white);
   }
 
-  /* 3D push button (ButtonLink / PushLayers). Colours come from --sp-face, --sp-edge, --sp-fg. */
-  .sp-btn {
-    --sp-face: radial-gradient(var(--sp-blue-700), var(--sp-blue-900));
-    --sp-edge: #012a40;
-    --sp-fg: var(--sp-white);
-    position: relative;
-    display: inline-flex;
-    appearance: none;
-    border: 0;
-    padding: 0 8px 12px;
-    min-width: 9rem;
-    background: transparent;
-    font: inherit;
-    font-weight: 500;
-    color: var(--sp-fg);
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .sp-btn-alt {
-    --sp-face: radial-gradient(var(--sp-teal-100), #bfe8ea);
-    --sp-edge: var(--sp-blue-700);
-    --sp-fg: var(--sp-blue-900);
-  }
-  .sp-btn-white {
-    --sp-face: radial-gradient(#fff, var(--sp-teal-100));
-    --sp-edge: var(--sp-teal-500);
-    --sp-fg: var(--sp-blue-900);
-  }
-  .sp-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-  .sp-btn:focus-visible {
-    outline: 3px solid var(--sp-teal-500);
-    outline-offset: 2px;
-    border-radius: 12px;
-  }
-  .sp-btn-top {
-    position: relative;
-    z-index: 0;
-    display: flex;
-    flex: 1;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    min-height: 2.75rem;
-    padding: 8px 16px;
-    transition: transform 0.2s;
-    user-select: none;
-  }
-  .sp-btn:not(:disabled):active .sp-btn-top {
-    transform: translateY(6px);
-  }
-  .sp-btn-top::after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    inset: 0;
-    border-radius: 4px;
-    background-image: var(--sp-face);
-    box-shadow:
-      inset 0 0 0 1px rgb(255 255 255 / 0.2),
-      0 1px 2px 1px rgb(255 255 255 / 0.2);
-    transition:
-      border-radius 0.2s,
-      inset 0.2s;
-  }
-  .sp-btn:not(:disabled):active .sp-btn-top::after {
-    border-radius: 6px;
-    inset: 0 -2px;
-  }
-  .sp-btn-bottom {
-    position: absolute;
-    z-index: -1;
-    bottom: 4px;
-    left: 4px;
-    width: calc(100% - 8px);
-    height: calc(100% - 10px);
-    padding-top: 6px;
-    box-sizing: content-box;
-    border-radius: 8px / 16px 16px 8px 8px;
-    background-color: var(--sp-edge);
-    box-shadow:
-      0 2px 3px rgb(0 0 0 / 0.5),
-      inset 0 -1px 3px 3px rgb(0 0 0 / 0.4);
-    transition:
-      border-radius 0.2s,
-      padding-top 0.2s;
-  }
-  .sp-btn:not(:disabled):active .sp-btn-bottom {
-    border-radius: 10px 10px 8px 8px / 8px;
-    padding-top: 0;
-  }
-  .sp-btn-base {
-    position: absolute;
-    z-index: -2;
-    top: 4px;
-    left: 0;
-    width: 100%;
-    height: calc(100% - 4px);
-    border-radius: 12px;
-    background-color: rgb(0 0 0 / 0.15);
-    box-shadow:
-      0 1px 1px rgb(255 255 255 / 0.75),
-      inset 0 2px 2px rgb(0 0 0 / 0.25);
+  /* Six-bar equalizer loader, sized by viewport. Bars are blue on a teal tint. */
+  .sp-loader {
+    width: clamp(72px, 20vw, 120px);
+    height: clamp(8px, 2vw, 14px);
+    border-radius: 0 0 6px 6px;
+    background:
+      linear-gradient(var(--sp-blue-700) 50%, #0000 0),
+      linear-gradient(#0000 50%, var(--sp-blue-700) 0),
+      linear-gradient(var(--sp-blue-700) 50%, #0000 0),
+      linear-gradient(#0000 50%, var(--sp-blue-700) 0),
+      linear-gradient(var(--sp-blue-700) 50%, #0000 0),
+      linear-gradient(#0000 50%, var(--sp-blue-700) 0) var(--sp-teal-100);
+    background-size: calc(100% / 6 + 1px) 200%;
+    background-repeat: no-repeat;
+    animation: sp-loader 2s infinite;
   }
 
   /* Slow drifting colour orbs behind banners. Pure CSS, no markup. */
@@ -284,5 +194,71 @@ h3 {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+@keyframes sp-loader {
+  0% {
+    background-position:
+      calc(0 * 100% / 5) 100%,
+      calc(1 * 100% / 5) 0%,
+      calc(2 * 100% / 5) 100%,
+      calc(3 * 100% / 5) 0%,
+      calc(4 * 100% / 5) 100%,
+      calc(5 * 100% / 5) 0%;
+  }
+  16.67% {
+    background-position:
+      calc(0 * 100% / 5) 0%,
+      calc(1 * 100% / 5) 0%,
+      calc(2 * 100% / 5) 100%,
+      calc(3 * 100% / 5) 0%,
+      calc(4 * 100% / 5) 100%,
+      calc(5 * 100% / 5) 0%;
+  }
+  33.33% {
+    background-position:
+      calc(0 * 100% / 5) 0%,
+      calc(1 * 100% / 5) 100%,
+      calc(2 * 100% / 5) 100%,
+      calc(3 * 100% / 5) 0%,
+      calc(4 * 100% / 5) 100%,
+      calc(5 * 100% / 5) 0%;
+  }
+  50% {
+    background-position:
+      calc(0 * 100% / 5) 0%,
+      calc(1 * 100% / 5) 100%,
+      calc(2 * 100% / 5) 0%,
+      calc(3 * 100% / 5) 0%,
+      calc(4 * 100% / 5) 100%,
+      calc(5 * 100% / 5) 0%;
+  }
+  66.67% {
+    background-position:
+      calc(0 * 100% / 5) 0%,
+      calc(1 * 100% / 5) 100%,
+      calc(2 * 100% / 5) 0%,
+      calc(3 * 100% / 5) 100%,
+      calc(4 * 100% / 5) 100%,
+      calc(5 * 100% / 5) 0%;
+  }
+  83.33% {
+    background-position:
+      calc(0 * 100% / 5) 0%,
+      calc(1 * 100% / 5) 100%,
+      calc(2 * 100% / 5) 0%,
+      calc(3 * 100% / 5) 100%,
+      calc(4 * 100% / 5) 0%,
+      calc(5 * 100% / 5) 0%;
+  }
+  100% {
+    background-position:
+      calc(0 * 100% / 5) 0%,
+      calc(1 * 100% / 5) 100%,
+      calc(2 * 100% / 5) 0%,
+      calc(3 * 100% / 5) 100%,
+      calc(4 * 100% / 5) 0%,
+      calc(5 * 100% / 5) 100%;
   }
 }
