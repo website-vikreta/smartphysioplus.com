@@ -83,6 +83,68 @@ body {
     color: var(--sp-white);
   }
 
+  /* Flat outlined button that lifts on hover (ButtonLink / PushLayers). Colours: --sp-face, --sp-edge, --sp-fg. */
+  .sp-btn {
+    --sp-face: #8fd3d6;
+    --sp-edge: var(--sp-blue-900);
+    --sp-fg: var(--sp-ink);
+    display: inline-flex;
+    flex-shrink: 0;
+    appearance: none;
+    min-width: 9rem;
+    border: 1px solid var(--sp-edge);
+    border-radius: 4px;
+    background: var(--sp-face);
+    font: inherit;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--sp-fg);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      box-shadow 0.14s ease-out,
+      transform 0.14s ease-out;
+  }
+  .sp-btn-alt {
+    --sp-face: var(--sp-teal-100);
+  }
+  .sp-btn-white {
+    --sp-face: #fff;
+  }
+  .sp-btn:not(:disabled):hover {
+    box-shadow: 4px 4px 0 var(--sp-edge);
+    transform: translate(-4px, -4px);
+  }
+  .sp-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .sp-btn:focus-visible {
+    outline: 3px solid var(--sp-teal-500);
+    outline-offset: 1px;
+  }
+  .sp-btn-top {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.75rem 1rem;
+    user-select: none;
+  }
+  /* Layers from the old push button; unused now. */
+  .sp-btn-bottom,
+  .sp-btn-base {
+    display: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sp-btn {
+      transition: none;
+    }
+  }
+
+
   /* Full-width loader line: two rows of bars sliding in opposite directions, like the equalizer it came from. */
   .sp-loader {
     height: 8px;
