@@ -1,11 +1,10 @@
 import type { SVGProps } from "react";
+import { siFacebook, siInstagram, siWhatsapp } from "simple-icons";
 
 // Small inline icon set (24px, stroke). Decorative by default: pair with visible text.
 const paths = {
   phone:
     "M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z",
-  whatsapp:
-    "M3 21l1.6-4.8A8.5 8.5 0 1 1 8 19.5L3 21Zm5.5-12.5c.3 2.5 2.5 5 5.5 6l1.5-1.5-2-1-1 .8a5 5 0 0 1-2-2l.8-1-1-2-1.8.7Z",
   pin: "M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Zm0-8.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z",
   clock: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0-14v5l3 2",
   check: "M5 12.5l4.5 4.5L19 7.5",
@@ -29,10 +28,6 @@ const paths = {
     "M12 20s-8-4.7-8-10.5A4.5 4.5 0 0 1 12 7a4.5 4.5 0 0 1 8 2.5C20 15.3 12 20 12 20Z",
   menu: "M4 7h16M4 12h16M4 17h16",
   close: "M6 6l12 12M18 6 6 18",
-  instagram:
-    "M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Zm5 6a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.5-2.5v.01",
-  facebook:
-    "M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8a1 1 0 0 1 1-1Z",
 } as const;
 
 export type IconName = keyof typeof paths;
@@ -73,5 +68,33 @@ export function IconBadge({
     >
       <Icon name={name} className="size-6" />
     </span>
+  );
+}
+
+// Single-colour brand marks (simple-icons paths). They follow the text colour. Decorative: pair with a label.
+const brands = {
+  whatsapp: siWhatsapp.path,
+  facebook: siFacebook.path,
+  instagram: siInstagram.path,
+};
+
+export type BrandName = keyof typeof brands;
+
+export function BrandLogo({
+  name,
+  className = "size-5",
+}: {
+  name: BrandName;
+  className?: string;
+}) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className={className}
+      fill="currentColor"
+    >
+      <path d={brands[name]} />
+    </svg>
   );
 }
