@@ -1,6 +1,6 @@
 import { clinic } from "@/content/clinic";
 import { formatHours, whatsappLink } from "@/lib/format";
-import { Icon } from "./Icon";
+import { BrandLogo, Icon } from "./Icon";
 
 // Thin contact strip above the header (desktop only). Phone and WhatsApp stay in the mobile action bar.
 export function TopBar() {
@@ -31,7 +31,7 @@ export function TopBar() {
               rel="noopener noreferrer"
               className={`${item} hover:underline`}
             >
-              <Icon name="whatsapp" className="size-4 text-sp-teal-100" />
+              <BrandLogo name="whatsapp" className="size-4 text-sp-teal-100" />
               WhatsApp
             </a>
           </li>
