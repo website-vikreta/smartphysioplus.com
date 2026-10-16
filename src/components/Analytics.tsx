@@ -38,9 +38,28 @@ export function Analytics() {
       if (href.startsWith("tel:")) track("click_call");
       else if (href.includes("wa.me")) track("click_whatsapp");
       else if (href.includes("google.com/maps/dir")) track("click_directions");
+      if (a?.closest("[data-related]"))
+        track("related_link_click", { from: location.pathname, to: href });
+      // Remember which page sent the visitor to booking (booking events carry it as source_page).
+      if (href.startsWith("/book-appointment/"))
+        try {
+          sessionStorage.setItem("sp_source", location.pathname);
+        } catch {
+          // Storage may be blocked.
+        }
+    };
+    // `toggle` does not bubble, so listen in the capture phase.
+    const onToggle = (e: Event) => {
+      const d = e.target as HTMLDetailsElement;
+      if (d.open && d.dataset.faq)
+        track("faq_open", { page: location.pathname, id: d.dataset.faq });
     };
     document.addEventListener("click", onClick);
-    return () => document.removeEventListener("click", onClick);
+    document.addEventListener("toggle", onToggle, true);
+    return () => {
+      document.removeEventListener("click", onClick);
+      document.removeEventListener("toggle", onToggle, true);
+    };
   }, []);
 
   const choose = (v: "yes" | "no") => {

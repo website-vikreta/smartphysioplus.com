@@ -131,11 +131,7 @@ export function ContactForm() {
       <div aria-live="polite" className="text-red-800">
         {error}
       </div>
-      <button
-        type="submit"
-        disabled={pending}
-        className="sp-btn"
-      >
+      <button type="submit" disabled={pending} className="sp-btn">
         <PushLayers>{pending ? "Sending..." : "Send message"}</PushLayers>
       </button>
     </form>

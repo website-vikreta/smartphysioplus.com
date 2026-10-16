@@ -5,18 +5,20 @@ import { Reveal } from "./Reveal";
 
 type Props = {
   crumbs?: { name: string; path: string }[];
+  /** Booking concern for the CTA band on P1 pages. */
+  concern?: string;
   children: ReactNode;
 };
 
 // Every indexable page: breadcrumbs (except Home), main content, CTA band.
-export function PageShell({ crumbs, children }: Props) {
+export function PageShell({ crumbs, concern, children }: Props) {
   return (
     <>
       {crumbs && <Breadcrumbs items={crumbs} />}
       <main id="main" className="flex-1">
         {children}
       </main>
-      <CtaBand />
+      <CtaBand concern={concern} />
     </>
   );
 }
