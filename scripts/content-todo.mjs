@@ -16,7 +16,10 @@ const walk = (dir) => {
       readFileSync(p, "utf8")
         .split(/\r?\n/)
         .forEach((line, i) => {
-          const m = line.match(/TODO-CONFIRM:?\s*(.*?)(?:\*\/\}?)?\s*$/);
+          // Only real comments that start with the marker, not prose that mentions it.
+          const m = line.match(
+            /^\s*(?:\/\/|\{?\/\*)\s*TODO-CONFIRM:?\s*(.*?)(?:\*\/\}?)?\s*$/,
+          );
           if (m)
             items.push(
               `- \`${relative(root, p).replaceAll("\\", "/")}:${i + 1}\` ${m[1].trim()}`,
