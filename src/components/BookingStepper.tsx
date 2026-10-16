@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import { submitBooking } from "@/app/actions";
 import { regions } from "@/content/regions";
 import { routes } from "@/content/routes";
-import { track } from "@/lib/analytics";
+import { sourcePage, track } from "@/lib/analytics";
 import { whatsappLink } from "@/lib/format";
 import {
   bookingSchema,
@@ -176,7 +176,10 @@ export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
   const begin = () => {
     if (!started.current) {
       started.current = true;
-      track("booking_start");
+      track("booking_start", {
+        concern: v.concern,
+        source_page: sourcePage(),
+      });
     }
   };
 
@@ -193,7 +196,10 @@ export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
         startedAt: startedAt.current,
       });
       if (res.ok) {
-        track("booking_submit", { concern: vals.concern });
+        track("booking_submit", {
+          concern: vals.concern,
+          source_page: sourcePage(),
+        });
         try {
           sessionStorage.removeItem(STORAGE);
         } catch {
@@ -509,11 +515,7 @@ export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
             <PushLayers>Next</PushLayers>
           </button>
         ) : (
-          <button
-            type="submit"
-            disabled={pending}
-            className="sp-btn"
-          >
+          <button type="submit" disabled={pending} className="sp-btn">
             <PushLayers>{pending ? "Sending..." : "Send request"}</PushLayers>
           </button>
         )}
