@@ -251,7 +251,7 @@ export default function Home() {
                     {c.items.map((i) => (
                       <li key={i.name}>
                         <Link
-                          href={i.href}
+                          href={resolveHref(i.href)}
                           className="sp-tag sp-btn-line inline-flex min-h-11 items-center px-5 text-sm"
                         >
                           {i.name}
