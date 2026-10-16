@@ -7,7 +7,8 @@ const owners: Record<string, string> = {
   "/orthopedic-physiotherapy/#disc-bulge": "back-pain-physiotherapy#disc-bulge",
   "/orthopedic-physiotherapy/#tailbone-pain":
     "back-pain-physiotherapy#tailbone-pain",
-  "/orthopedic-physiotherapy/#posture": "back-pain-physiotherapy#posture",
+  "/orthopedic-physiotherapy/#posture":
+    "back-pain-physiotherapy#posture-and-desk-work-pain",
   "/orthopedic-physiotherapy/#sciatica": "sciatica-physiotherapy",
   "/orthopedic-physiotherapy/#neck-pain": "neck-pain-physiotherapy",
   "/orthopedic-physiotherapy/#knee-pain": "knee-pain-physiotherapy",

@@ -18,7 +18,12 @@ const idle = (cb: () => void) =>
     ? window.requestIdleCallback(cb)
     : setTimeout(cb, 300);
 
-export function SpinePanel() {
+// `treat` comes from the server so links resolve to live P1 pages (futureRoutes).
+export function SpinePanel({
+  treat,
+}: {
+  treat: Record<RegionId, { label: string; href: string }[]>;
+}) {
   const box = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useState<RegionId | null>(null);
   const [hover, setHover] = useState<string | null>(null);
@@ -148,12 +153,15 @@ export function SpinePanel() {
               .
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
-              <Link
-                href={region.treatHref}
-                className="inline-flex min-h-12 items-center text-sp-blue-700 underline"
-              >
-                See treatment
-              </Link>
+              {treat[region.id].map((t) => (
+                <Link
+                  key={t.href}
+                  href={t.href}
+                  className="inline-flex min-h-12 items-center text-sp-blue-700 underline"
+                >
+                  {t.label}: see treatment
+                </Link>
+              ))}
               <ButtonLink href={`${routes.book.path}?concern=${region.id}`}>
                 Book for this
               </ButtonLink>
