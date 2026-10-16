@@ -15,6 +15,8 @@ import { clinic } from "@/content/clinic";
 import { localFaq } from "@/content/faq";
 import { flags } from "@/content/flags";
 import { routes } from "@/content/routes";
+import { resolveHref } from "@/content/futureRoutes";
+import { type RegionId, regions } from "@/content/regions";
 import { formatHours } from "@/lib/format";
 import { pageMetadata } from "@/lib/seo";
 
@@ -203,7 +205,19 @@ export default function Home() {
                 className="absolute -bottom-4 -right-4 hidden size-full rounded-[2rem] bg-sp-blue-700/15 md:block"
               />
               <div className="sp-card relative !rounded-[2rem] !p-4 shadow-xl md:!p-6">
-                <SpinePanel />
+                <SpinePanel
+                  treat={
+                    Object.fromEntries(
+                      regions.map((r) => [
+                        r.id,
+                        r.treat.map((t) => ({
+                          ...t,
+                          href: resolveHref(t.href),
+                        })),
+                      ]),
+                    ) as Record<RegionId, { label: string; href: string }[]>
+                  }
+                />
               </div>
             </div>
           </div>
