@@ -77,7 +77,7 @@ matrix[P.physio].push(...allLive);
 matrix[P.services].push(...allLive);
 matrix[P.ortho].push(
   ...liveOf(
-    (x) => x.relatedService === "orthopedic" && x.cluster !== "service-local",
+    (x) => x.relatedService === "orthopedic", // includes the local ortho page
   ),
 );
 matrix[P.neuro].push(...liveOf((x) => x.relatedService === "neuro"));

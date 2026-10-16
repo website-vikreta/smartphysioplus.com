@@ -6,9 +6,12 @@ import { PageHeading, PageShell, Section } from "@/components/PageShell";
 import { conditions } from "@/content/conditions";
 import { ownerPage, resolveHref } from "@/content/futureRoutes";
 import { routes } from "@/content/routes";
+import { liveHref } from "@/lib/content";
 import { absoluteUrl, pageMetadata } from "@/lib/seo";
 
 const path = routes.ortho.path;
+// Local landing page (flag: orthoLocalPage), linked only once live.
+const localOrtho = liveHref("orthopedic-physiotherapy-baner-balewadi", "");
 
 export const metadata = pageMetadata({
   title: "Orthopedic Physiotherapy in Balewadi, Pune | Smart Physio+",
@@ -119,6 +122,16 @@ export default function OrthoPage() {
             physiotherapy clinic in Baner and Balewadi
           </Link>
           .
+          {localOrtho && (
+            <>
+              {" "}
+              Live nearby? See{" "}
+              <Link href={localOrtho} className="text-sp-blue-700 underline">
+                orthopedic care for Baner, Balewadi, Pashan and Aundh
+              </Link>
+              .
+            </>
+          )}
         </p>
         <div className="mt-4">
           <DisclaimerNote />

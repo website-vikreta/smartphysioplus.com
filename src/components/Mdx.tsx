@@ -1,7 +1,10 @@
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
+import { clinic } from "@/content/clinic";
 import { flags } from "@/content/flags";
+import { formatHours } from "@/lib/format";
 import { getPage, isLive, pagePath } from "@/lib/content";
+import { ButtonLink } from "./ButtonLink";
 import { Icon } from "./Icon";
 import { TrackView } from "./TrackView";
 
@@ -65,6 +68,30 @@ function RedFlags({ slug, children }: { slug: string; children: ReactNode }) {
   );
 }
 
+/** Address, hours and directions from clinic.ts (NAP lives only there). */
+function ClinicAddress() {
+  const a = clinic.address;
+  return (
+    <div className="sp-card my-6">
+      <address className="not-italic">
+        {a.street}
+        <br />
+        {a.locality}, {a.city}, {a.region} {a.postalCode}
+      </address>
+      <p className="mt-2">{formatHours()}</p>
+      <ButtonLink
+        href={clinic.google.directionsUrl}
+        icon="pin"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-4"
+      >
+        Get directions
+      </ButtonLink>
+    </div>
+  );
+}
+
 export const mdxComponents = {
   h2: ({ children }: ComponentProps<"h2">) => (
     <h2
@@ -97,5 +124,6 @@ export const mdxComponents = {
   ),
   PageLink,
   Flagged,
+  ClinicAddress,
   RedFlags,
 };
