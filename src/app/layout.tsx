@@ -7,6 +7,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { MobileActionBar } from "@/components/MobileActionBar";
 import { TopBar } from "@/components/TopBar";
 import { clinic } from "@/content/clinic";
+import { livePages, pagePath } from "@/lib/content";
 import { siteSchema } from "@/lib/schema";
 import "./globals.css";
 
@@ -34,7 +35,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <TopBar />
-        <Header />
+        <Header
+          conditions={livePages
+            .filter((p) => p.cluster !== "service-local")
+            .map((p) => ({ href: pagePath(p.slug), label: p.title }))}
+        />
         {children}
         <Footer />
         <MobileActionBar />

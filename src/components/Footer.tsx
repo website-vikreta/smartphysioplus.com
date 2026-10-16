@@ -3,16 +3,19 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { clinic } from "@/content/clinic";
 import { routes } from "@/content/routes";
+import { livePages, pagePath } from "@/lib/content";
 import { formatHours, whatsappLink } from "@/lib/format";
 import { ButtonLink } from "./ButtonLink";
 import { BrandLogo, IconBadge, type IconName } from "./Icon";
 import { TourLink } from "./TourLink";
 
+// P0 care pages plus every live P1 page.
 const care = [
   routes.physiotherapy,
   routes.ortho,
   routes.neuro,
   routes.services,
+  ...livePages.map((p) => ({ path: pagePath(p.slug), name: p.title })),
 ];
 const explore = [
   routes.local,

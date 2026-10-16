@@ -1,13 +1,17 @@
 import Link from "next/link";
 import { JsonLd } from "@/components/JsonLd";
 import { PageHeading, PageShell, Section } from "@/components/PageShell";
+import { LivePageList } from "@/components/LivePageList";
 import { ServiceGrid } from "@/components/ServiceGrid";
 import { routes } from "@/content/routes";
-import { serviceGroups, services } from "@/content/services";
+import { resolveHref } from "@/content/futureRoutes";
+import { serviceGroups, services as allServices } from "@/content/services";
 import { CLINIC_ID } from "@/lib/schema";
 import { absoluteUrl, pageMetadata } from "@/lib/seo";
 
 const path = routes.services.path;
+// Old anchors resolve to live P1 pages; live rehab/sports pages are listed too.
+const services = allServices.map((s) => ({ ...s, href: resolveHref(s.href) }));
 
 export const metadata = pageMetadata({
   title: "Physiotherapy Services in Balewadi, Pune | Smart Physio+",
@@ -25,6 +29,7 @@ export default function ServicesPage() {
       />
       <Section>
         <ServiceGrid services={services} groups={serviceGroups} />
+        <LivePageList />
         <p className="mt-8 max-w-2xl">
           Read more about{" "}
           <Link href={routes.ortho.path} className="text-sp-blue-700 underline">
