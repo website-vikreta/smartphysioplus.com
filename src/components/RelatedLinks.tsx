@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { specialtyRoute } from "@/content/breadcrumbs";
 import { routes } from "@/content/routes";
+import { liveResources, resourcePath } from "@/lib/resources";
 import { type ContentPage, getPage, isLive, pagePath } from "@/lib/content";
 
 // Related links for P1 pages (promptP1.md section 7). Unpublished pages are never linked.
@@ -10,9 +11,15 @@ export function RelatedLinks({ page }: { page: ContentPage }) {
     .filter(isLive)
     .map((p) => ({ href: pagePath(p.slug), label: p.title }));
 
+  const guides = page.relatedResources
+    .map((s) => liveResources.find((r) => r.slug === s))
+    .filter((r) => !!r)
+    .map((r) => ({ href: resourcePath(r.slug), label: r.title }));
+
   const specialty = specialtyRoute(page);
   const links = [
     ...related,
+    ...guides,
     page.cluster === "condition"
       ? {
           href: specialty.path,

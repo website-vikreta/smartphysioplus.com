@@ -1,7 +1,17 @@
 // Usage: pnpm content:check-duplication   (runs before every build)
 // Fails when two P1 pages share more than 30% of their body text (5-word shingles, Jaccard),
 // or when any paragraph, summary or FAQ answer appears on two pages (promptP1.md rules 4 and 5).
-import { allPages } from "../src/lib/content.ts";
+import { allPages as pages } from "../src/lib/content.ts";
+import { allResources } from "../src/lib/resources.ts";
+
+// Articles are checked against the condition pages and each other (promptP2.md rule 4).
+const allPages = [
+  ...pages,
+  ...allResources.map((r) => ({
+    ...r,
+    faqs: [] as { q: string; a: string }[],
+  })),
+];
 
 const LIMIT = 0.3;
 const K = 5;

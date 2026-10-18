@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { DisclaimerNote } from "@/components/DisclaimerNote";
 import { Faq } from "@/components/Faq";
+import { FaqLinks } from "@/components/FaqLinks";
 import { JsonLd } from "@/components/JsonLd";
-import { LivePageList } from "@/components/LivePageList";
+import { HubLinks, LivePageList } from "@/components/LivePageList";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { StackCards, StackPanel } from "@/components/StackCards";
 import { PageHeading, PageShell, Section } from "@/components/PageShell";
@@ -154,11 +155,21 @@ export default function PhysiotherapyPage() {
       {livePages.length > 0 && (
         <Section id="conditions">
           <LivePageList />
+          <HubLinks />
         </Section>
       )}
 
       <Section id="faq" title="Common questions">
         <Faq items={physioFaq} />
+        <div className="mt-6">
+          <FaqLinks
+            ids={[
+              "how-long-is-a-session",
+              "is-physiotherapy-painful",
+              "is-a-physiotherapist-a-doctor",
+            ]}
+          />
+        </div>
         <div className="mt-6">
           <DisclaimerNote />
         </div>

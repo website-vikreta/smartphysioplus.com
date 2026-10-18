@@ -54,15 +54,15 @@ export function ServiceGrid({
           >
             <IconBadge name={groupIcon[s.group]} />
             <p className="mt-4 text-xs text-sp-blue-900">{s.group}</p>
-            <h3 className="mt-1 text-lg font-semibold text-sp-blue-900">
+            <h2 className="mt-1 text-lg font-semibold text-sp-blue-900">
               {s.name}
-            </h3>
+            </h2>
             <p className="mt-1 flex-1 text-sm">{s.blurb}</p>
             <Link
               href={s.href}
               className="mt-3 inline-flex min-h-11 items-center gap-1 text-sp-blue-700 underline"
             >
-              Learn more
+              Learn more<span className="sr-only"> about {s.name}</span>
               <Icon name="arrow" className="size-4" />
             </Link>
           </li>

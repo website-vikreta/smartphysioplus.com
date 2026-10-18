@@ -266,3 +266,20 @@ h3 {
       0 0;
   }
 }
+
+/* Scroll-in reveal (Reveal.tsx). Lift only, no fade, so text never renders at partial opacity (contrast, LCP).
+   Browsers without scroll-driven animations just show the content. */
+@keyframes sp-reveal {
+  from {
+    transform: translateY(2rem);
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .sp-reveal {
+      animation: sp-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+  }
+}

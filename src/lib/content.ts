@@ -4,9 +4,10 @@ import matter from "gray-matter";
 import { z } from "zod";
 import { flags } from "../content/flags.ts";
 import { type Frontmatter, pageSchema } from "../content/schema.ts";
+import { allResources } from "./resources.ts";
 
 // P1 MDX collections (promptP1.md section 3). Relative .ts imports so scripts can load this with plain Node.
-// "resources" joins in P2.
+// Resources load separately in src/lib/resources.ts (different schema).
 const COLLECTIONS = ["conditions", "rehabilitation"];
 
 export type ContentPage = Frontmatter & { body: string; file: string };
@@ -32,6 +33,11 @@ function load(): ContentPage[] {
     for (const s of [...p.relatedConditions, ...p.relatedRehab])
       if (!slugs.has(s))
         throw new Error(`${p.file}: unknown related page "${s}"`);
+  const resources = new Set(allResources.map((r) => r.slug));
+  for (const p of pages)
+    for (const s of p.relatedResources)
+      if (!resources.has(s))
+        throw new Error(`${p.file}: unknown related resource "${s}"`);
   return pages;
 }
 

@@ -27,3 +27,7 @@ export const WHATSAPP_MESSAGE =
 
 export const whatsappLink = (text = WHATSAPP_MESSAGE) =>
   `${clinic.whatsapp}?text=${encodeURIComponent(text)}`;
+
+/** Google's direct "write a review" form for the clinic. */
+export const writeReviewUrl = () =>
+  `https://search.google.com/local/writereview?placeid=${clinic.google.placeId}`;

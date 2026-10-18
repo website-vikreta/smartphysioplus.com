@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ButtonLink } from "@/components/ButtonLink";
 import { DisclaimerNote } from "@/components/DisclaimerNote";
 import { Faq } from "@/components/Faq";
+import { FaqLinks } from "@/components/FaqLinks";
 import { JsonLd } from "@/components/JsonLd";
 import { StackCards, StackPanel } from "@/components/StackCards";
 import { PageHeading, PageShell, Section } from "@/components/PageShell";
@@ -118,8 +119,11 @@ export default function NeuroPage() {
         </p>
       </Section>
 
-      <Section title="Common questions">
+      <Section id="faq" title="Common questions">
         <Faq items={neuroFaq} />
+        <div className="mt-6">
+          <FaqLinks ids={["is-a-physiotherapist-a-doctor"]} />
+        </div>
         <div className="mt-6">
           <DisclaimerNote />
         </div>

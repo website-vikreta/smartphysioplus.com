@@ -7,7 +7,9 @@ import { JsonLd } from "@/components/JsonLd";
 import { MobileActionBar } from "@/components/MobileActionBar";
 import { TopBar } from "@/components/TopBar";
 import { clinic } from "@/content/clinic";
+import { routes } from "@/content/routes";
 import { livePages, pagePath } from "@/lib/content";
+import { publishable } from "@/lib/publishable";
 import { siteSchema } from "@/lib/schema";
 import "./globals.css";
 
@@ -39,6 +41,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           conditions={livePages
             .filter((p) => p.cluster !== "service-local")
             .map((p) => ({ href: pagePath(p.slug), label: p.title }))}
+          conditionsHub={
+            publishable.conditionsHub ? routes.conditions.path : undefined
+          }
+          more={[
+            routes.about,
+            ...(publishable.rehabHub ? [routes.rehabilitation] : []),
+            routes.reviews,
+            ...(publishable.faqs ? [routes.faqs] : []),
+            ...(publishable.resourcesIndex ? [routes.resources] : []),
+          ].map((r) => ({ href: r.path, label: r.name }))}
         />
         {children}
         <Footer />

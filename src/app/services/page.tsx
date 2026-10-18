@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { JsonLd } from "@/components/JsonLd";
 import { PageHeading, PageShell, Section } from "@/components/PageShell";
-import { LivePageList } from "@/components/LivePageList";
+import { HubLinks, LivePageList } from "@/components/LivePageList";
 import { ServiceGrid } from "@/components/ServiceGrid";
 import { routes } from "@/content/routes";
 import { resolveHref } from "@/content/futureRoutes";
@@ -30,6 +30,7 @@ export default function ServicesPage() {
       <Section>
         <ServiceGrid services={services} groups={serviceGroups} />
         <LivePageList />
+        <HubLinks />
         <p className="mt-8 max-w-2xl">
           Read more about{" "}
           <Link href={routes.ortho.path} className="text-sp-blue-700 underline">

@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { routes } from "@/content/routes";
 import { livePages, pagePath } from "@/lib/content";
+import { publishable } from "@/lib/publishable";
 
 const groups = [
   { title: "Conditions we treat", clusters: ["condition"] },
@@ -36,5 +38,27 @@ export function LivePageList() {
         </div>
       ))}
     </div>
+  );
+}
+
+/** Links to the P2 hubs that are publishable. Renders nothing otherwise. */
+export function HubLinks() {
+  const hubs = [
+    publishable.conditionsHub && routes.conditions,
+    publishable.rehabHub && routes.rehabilitation,
+  ].filter((r) => !!r);
+  if (!hubs.length) return null;
+  return (
+    <p className="mt-8">
+      See all:{" "}
+      {hubs.map((r, i) => (
+        <span key={r.path}>
+          {i > 0 && " · "}
+          <Link href={r.path} className="text-sp-blue-700 underline">
+            {r.name}
+          </Link>
+        </span>
+      ))}
+    </p>
   );
 }

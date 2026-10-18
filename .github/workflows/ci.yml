@@ -1,0 +1,27 @@
+name: CI
+
+# Runs the same checks as DEPLOY.md: types, lint, build, then the link matrix, review gate, orphan and depth checks
+# against the production build. Lighthouse and axe stay manual (pnpm audit:site) because they need Chrome and take minutes.
+on:
+  pull_request:
+    branches: [release-10-2026]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm build
+      - name: Link matrix, review gate, schema and sitemap checks
+        run: |
+          pnpm start &
+          npx --yes wait-on http://localhost:3000/ --timeout 60000
+          pnpm check-links

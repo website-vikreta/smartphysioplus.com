@@ -51,7 +51,7 @@ export function Section({
             {intro && <p className="mt-4 text-lg">{intro}</p>}
           </Reveal>
         )}
-        <Reveal delay={0.1}>{children}</Reveal>
+        <Reveal>{children}</Reveal>
       </div>
     </section>
   );

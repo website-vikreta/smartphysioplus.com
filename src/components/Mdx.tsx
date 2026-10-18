@@ -2,7 +2,9 @@ import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 import { clinic } from "@/content/clinic";
 import { flags } from "@/content/flags";
+import { routes } from "@/content/routes";
 import { formatHours } from "@/lib/format";
+import { publishable } from "@/lib/publishable";
 import { getPage, isLive, pagePath } from "@/lib/content";
 import { ButtonLink } from "./ButtonLink";
 import { Icon } from "./Icon";
@@ -36,6 +38,24 @@ function PageLink({ slug, children }: { slug: string; children: ReactNode }) {
   );
 }
 
+const hubs = {
+  conditions: [routes.conditions.path, publishable.conditionsHub],
+  rehabilitation: [routes.rehabilitation.path, publishable.rehabHub],
+  "physiotherapy-at-home": [routes.homeVisit.path, publishable.homeVisit],
+} as const;
+
+/** Links to a P2 hub or the home-visit page only once it is publishable; otherwise plain text. */
+function Hub({ to, children }: { to: keyof typeof hubs; children: ReactNode }) {
+  const [href, ok] = hubs[to];
+  return ok ? (
+    <Link href={href} className={linkCls}>
+      {children}
+    </Link>
+  ) : (
+    <>{children}</>
+  );
+}
+
 /** Content that shows only once the client confirms the fact. Add a TODO-CONFIRM comment beside each use. */
 function Flagged({
   flag,
@@ -61,6 +81,27 @@ function RedFlags({ slug, children }: { slug: string; children: ReactNode }) {
         >
           <Icon name="shield" className="size-5 shrink-0" />
           See a doctor first, or urgently, if you have:
+        </p>
+        <div className="mt-2 [&_ul]:mt-0">{children}</div>
+      </aside>
+    </TrackView>
+  );
+}
+
+/** "Stop and get assessed" box for resource articles. Clinically reviewed with the article. */
+function StopBox({ slug, children }: { slug: string; children: ReactNode }) {
+  return (
+    <TrackView event="red_flag_box_view" params={{ slug }}>
+      <aside
+        aria-labelledby={`stop-${slug}`}
+        className="my-6 rounded-2xl border-2 border-sp-blue-900 bg-sp-white p-5"
+      >
+        <p
+          id={`stop-${slug}`}
+          className="flex items-center gap-2 font-semibold text-sp-blue-900"
+        >
+          <Icon name="shield" className="size-5 shrink-0" />
+          Stop and get assessed if you have:
         </p>
         <div className="mt-2 [&_ul]:mt-0">{children}</div>
       </aside>
@@ -126,4 +167,6 @@ export const mdxComponents = {
   Flagged,
   ClinicAddress,
   RedFlags,
+  StopBox,
+  Hub,
 };

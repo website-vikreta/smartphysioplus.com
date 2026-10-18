@@ -1,21 +1,22 @@
 import Link from "next/link";
 import { ButtonLink } from "@/components/ButtonLink";
-import { Faq } from "@/components/Faq";
+import { FaqLinks } from "@/components/FaqLinks";
+import { HubLinks } from "@/components/LivePageList";
 import { MapFacade } from "@/components/MapFacade";
 import { PageHeading, PageShell, Section } from "@/components/PageShell";
 import { clinic } from "@/content/clinic";
-import { localFaq } from "@/content/faq";
 import { flags } from "@/content/flags";
 import { routes } from "@/content/routes";
 import { formatHours } from "@/lib/format";
 import { pageMetadata } from "@/lib/seo";
 
 const path = routes.local.path;
+// The road name, taken from clinic.ts so the address stays in one place.
+const road = clinic.address.street.split(", ").pop();
 
 export const metadata = pageMetadata({
   title: "Physiotherapy Clinic in Baner & Balewadi, Pune | Smart Physio+",
-  description:
-    "Smart Physio+ is a physiotherapy clinic on Sopan Baug Road, Balewadi, serving Baner, Pashan, Aundh and nearby areas. See hours, directions and how to book.",
+  description: `Smart Physio+ is a physiotherapy clinic on ${road}, Balewadi, serving Baner, Pashan, Aundh and nearby areas. See hours, directions and how to book.`,
   path,
 });
 
@@ -25,7 +26,7 @@ export default function LocalPage() {
     <PageShell crumbs={[{ name: routes.local.name, path }]}>
       <PageHeading
         title="Physiotherapy clinic for Baner and Balewadi, Pune"
-        intro="Smart Physio+ is on Sopan Baug Road in Balewadi, close to Baner. We help people with pain, injuries and recovery after surgery."
+        intro={`Smart Physio+ is on ${road} in Balewadi, close to Baner. We help people with pain, injuries and recovery after surgery.`}
       />
 
       <Section title="Who we see nearby">
@@ -41,6 +42,7 @@ export default function LocalPage() {
           Patients also come to us from Pashan, Aundh, Sus, Wakad, Hinjawadi and
           Ravet.
         </p>
+        <HubLinks />
       </Section>
 
       <Section title="How to reach us" tint>
@@ -74,7 +76,9 @@ export default function LocalPage() {
       </Section>
 
       <Section title="Local questions">
-        <Faq items={localFaq()} />
+        <FaqLinks
+          ids={["what-are-your-hours", "where-is-the-clinic", "how-do-i-book"]}
+        />
         <p className="mt-6 max-w-2xl">
           Learn{" "}
           <Link
