@@ -5,6 +5,7 @@ import { PageHeading, PageShell, Section } from "@/components/PageShell";
 import { clinic } from "@/content/clinic";
 import { routes } from "@/content/routes";
 import { formatHours, whatsappLink } from "@/lib/format";
+import { publishable } from "@/lib/publishable";
 import { pageMetadata } from "@/lib/seo";
 import { DEFAULT_SLOT_MINUTES } from "@/lib/slots";
 
@@ -48,7 +49,10 @@ export default function BookPage() {
           </ButtonLink>
         </div>
         <Suspense fallback={<p>Loading the booking form...</p>}>
-          <BookingStepper slotMinutes={slotMinutes} />
+          <BookingStepper
+            slotMinutes={slotMinutes}
+            homeVisit={publishable.homeVisit}
+          />
         </Suspense>
       </Section>
     </PageShell>

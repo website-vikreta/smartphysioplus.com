@@ -12,9 +12,8 @@ import { pageMetadata } from "@/lib/seo";
 const path = routes.contact.path;
 
 export const metadata = pageMetadata({
-  title: "Contact Smart Physio+ | Balewadi, Pune | +91 86699 22351",
-  description:
-    "Call, WhatsApp or visit Smart Physio+ at 402 Archway, Sopan Baug Road, Balewadi, Pune. See hours and directions, or send us a message.",
+  title: `Contact Smart Physio+ | Balewadi, Pune | ${clinic.phone.display}`,
+  description: `Call, WhatsApp or visit Smart Physio+ at ${clinic.address.street}, ${clinic.address.locality}, ${clinic.address.city}. See hours and directions, or send us a message.`,
   path,
 });
 

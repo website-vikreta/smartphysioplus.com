@@ -71,3 +71,32 @@ export function siteSchema() {
     },
   ];
 }
+
+/** CollectionPage + ItemList for a hub. `items` are the live pages it lists (promptP2.md sections 3 and 4). */
+export function collectionSchema(
+  name: string,
+  description: string,
+  path: string,
+  items: { name: string; path: string }[],
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `${absoluteUrl(path)}#webpage`,
+    url: absoluteUrl(path),
+    name,
+    description,
+    inLanguage: "en-IN",
+    isPartOf: { "@id": `${clinic.domain}/#website` },
+    about: { "@id": CLINIC_ID },
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: items.map((p, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: p.name,
+        url: absoluteUrl(p.path),
+      })),
+    },
+  };
+}

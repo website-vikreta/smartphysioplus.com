@@ -4,10 +4,14 @@ import { DisclaimerNote } from "@/components/DisclaimerNote";
 import { JsonLd } from "@/components/JsonLd";
 import { PageHeading, PageShell, Section } from "@/components/PageShell";
 import { conditions } from "@/content/conditions";
+import { ownerPage, resolveHref } from "@/content/futureRoutes";
 import { routes } from "@/content/routes";
+import { liveHref } from "@/lib/content";
 import { absoluteUrl, pageMetadata } from "@/lib/seo";
 
 const path = routes.ortho.path;
+// Local landing page (flag: orthoLocalPage), linked only once live.
+const localOrtho = liveHref("orthopedic-physiotherapy-baner-balewadi", "");
 
 export const metadata = pageMetadata({
   title: "Orthopedic Physiotherapy in Balewadi, Pune | Smart Physio+",
@@ -46,52 +50,56 @@ export default function OrthoPage() {
         title="Robotic spine decompression"
         tint
       >
-        <div className="max-w-3xl space-y-3">
-          <p>
-            <strong>What it is:</strong> a computer-guided table that gently
-            stretches the spine in a controlled way.
-          </p>
-          <p>
-            <strong>Who is assessed for it:</strong> people with certain back
-            and neck problems, including some disc-related pain. We decide at
-            assessment whether it suits you.
-          </p>
-          <p>
-            <strong>What a session feels like:</strong> you lie on the table
-            while it works. Most people describe it as a gentle stretch. Tell us
-            straight away if anything feels wrong.
-          </p>
-        </div>
+        <p className="max-w-3xl">
+          A computer-guided table applies a slow, controlled stretch to the
+          spine. We consider it for some back and neck problems, including some
+          disc-related pain, once your assessment supports it.
+        </p>
       </Section>
 
-      {conditions.map((c, i) => (
-        <Section key={c.id} id={c.id} title={c.title} tint={i % 2 === 1}>
-          <dl className="sp-card grid max-w-3xl gap-3">
-            <div>
-              <dt className="font-semibold text-sp-blue-900">What it is</dt>
-              <dd>{c.what}</dd>
+      {conditions.map((c, i) => {
+        // Conditions with their own P1 page show its summary here; that page owns the detail.
+        const anchor = `${path}#${c.id}`;
+        const page = ownerPage(anchor);
+        const href = resolveHref(anchor);
+        return (
+          <Section key={c.id} id={c.id} title={c.title} tint={i % 2 === 1}>
+            {page ? (
+              <p className="max-w-3xl">{page.summary}</p>
+            ) : (
+              <dl className="sp-card grid max-w-3xl gap-3">
+                <div>
+                  <dt className="font-semibold text-sp-blue-900">What it is</dt>
+                  <dd>{c.what}</dd>
+                </div>
+                <div>
+                  <dt className="font-semibold text-sp-blue-900">
+                    When physiotherapy may help
+                  </dt>
+                  <dd>{c.help}</dd>
+                </div>
+                <div>
+                  <dt className="font-semibold text-sp-blue-900">
+                    How we approach it
+                  </dt>
+                  <dd>{c.approach}</dd>
+                </div>
+              </dl>
+            )}
+            <div className="mt-4 flex flex-wrap items-center gap-4">
+              <ButtonLink href={`${routes.book.path}?concern=${c.concern}`}>
+                Book for this
+              </ButtonLink>
+              {href !== anchor && (
+                <Link href={href} className="text-sp-blue-700 underline">
+                  Read about{" "}
+                  {page?.title.toLowerCase() ?? c.title.toLowerCase()}
+                </Link>
+              )}
             </div>
-            <div>
-              <dt className="font-semibold text-sp-blue-900">
-                When physiotherapy may help
-              </dt>
-              <dd>{c.help}</dd>
-            </div>
-            <div>
-              <dt className="font-semibold text-sp-blue-900">
-                How we approach it
-              </dt>
-              <dd>{c.approach}</dd>
-            </div>
-          </dl>
-          <ButtonLink
-            href={`${routes.book.path}?concern=${c.concern}`}
-            className="mt-4"
-          >
-            Book for this
-          </ButtonLink>
-        </Section>
-      ))}
+          </Section>
+        );
+      })}
 
       <Section>
         <p className="max-w-2xl">
@@ -114,6 +122,16 @@ export default function OrthoPage() {
             physiotherapy clinic in Baner and Balewadi
           </Link>
           .
+          {localOrtho && (
+            <>
+              {" "}
+              Live nearby? See{" "}
+              <Link href={localOrtho} className="text-sp-blue-700 underline">
+                orthopedic care for Baner, Balewadi, Pashan and Aundh
+              </Link>
+              .
+            </>
+          )}
         </p>
         <div className="mt-4">
           <DisclaimerNote />

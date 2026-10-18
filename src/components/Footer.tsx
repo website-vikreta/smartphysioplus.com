@@ -3,21 +3,31 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { clinic } from "@/content/clinic";
 import { routes } from "@/content/routes";
+import { livePages, pagePath } from "@/lib/content";
+import { publishable } from "@/lib/publishable";
 import { formatHours, whatsappLink } from "@/lib/format";
 import { ButtonLink } from "./ButtonLink";
 import { BrandLogo, IconBadge, type IconName } from "./Icon";
 import { TourLink } from "./TourLink";
 
+// P0 care pages, the P2 hubs once publishable, and every live P1 page.
 const care = [
   routes.physiotherapy,
   routes.ortho,
   routes.neuro,
   routes.services,
+  ...(publishable.conditionsHub ? [routes.conditions] : []),
+  ...(publishable.rehabHub ? [routes.rehabilitation] : []),
+  ...(publishable.homeVisit ? [routes.homeVisit] : []),
+  ...livePages.map((p) => ({ path: pagePath(p.slug), name: p.title })),
 ];
 const explore = [
   routes.local,
   routes.doctor,
   routes.about,
+  routes.reviews,
+  ...(publishable.faqs ? [routes.faqs] : []),
+  ...(publishable.resourcesIndex ? [routes.resources] : []),
   routes.contact,
   routes.book,
 ];

@@ -8,7 +8,14 @@ export function Faq({ items }: { items: FaqItem[] }) {
     <>
       <div className="grid max-w-3xl gap-3">
         {items.map((f) => (
-          <details key={f.q} className="sp-card group !p-0">
+          <details
+            key={f.q}
+            data-faq={f.q
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .slice(0, 60)}
+            className="sp-card group !p-0"
+          >
             <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 px-5 py-3 font-medium text-sp-blue-900">
               {f.q}
               <Icon

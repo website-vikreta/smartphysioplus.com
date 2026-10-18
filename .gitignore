@@ -44,3 +44,6 @@ next-env.d.ts
 
 server.log
 server.err
+
+# site audit output (pnpm audit:site)
+/.audit/

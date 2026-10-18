@@ -10,7 +10,8 @@ export type Region = {
   about: string;
   problems: string[];
   help: string;
-  treatHref: string;
+  /** Old specialty anchors. Resolved to live P1 pages with resolveHref() on the server. */
+  treat: { label: string; href: string }[];
 };
 
 export const regions: Region[] = [
@@ -23,7 +24,9 @@ export const regions: Region[] = [
     short: "Neck",
     problems: ["Neck pain", "Stiff neck", "Posture problems"],
     help: "We assess your neck and posture, then plan manual therapy and exercises.",
-    treatHref: "/orthopedic-physiotherapy/#neck-pain",
+    treat: [
+      { label: "Neck pain", href: "/orthopedic-physiotherapy/#neck-pain" },
+    ],
   },
   {
     id: "thoracic",
@@ -38,7 +41,9 @@ export const regions: Region[] = [
       "Posture problems",
     ],
     help: "We look at how your upper back and shoulders move, then build a plan around it.",
-    treatHref: "/orthopedic-physiotherapy/#posture",
+    treat: [
+      { label: "Posture problems", href: "/orthopedic-physiotherapy/#posture" },
+    ],
   },
   {
     id: "lumbar",
@@ -49,7 +54,13 @@ export const regions: Region[] = [
     short: "Lower back",
     problems: ["Lower back pain", "Lumbar disc bulge", "Sciatica"],
     help: "After an assessment, a plan can include manual therapy, exercise and robotic spine decompression.",
-    treatHref: "/orthopedic-physiotherapy/#back-pain",
+    treat: [
+      {
+        label: "Lower back pain",
+        href: "/orthopedic-physiotherapy/#back-pain",
+      },
+      { label: "Sciatica", href: "/orthopedic-physiotherapy/#sciatica" },
+    ],
   },
   {
     id: "sacral",
@@ -60,7 +71,12 @@ export const regions: Region[] = [
     short: "Tailbone",
     problems: ["Tailbone pain", "Pain when sitting"],
     help: "We assess the tailbone and surrounding muscles, then explain your options.",
-    treatHref: "/orthopedic-physiotherapy/#tailbone-pain",
+    treat: [
+      {
+        label: "Tailbone pain",
+        href: "/orthopedic-physiotherapy/#tailbone-pain",
+      },
+    ],
   },
   {
     id: "joints",
@@ -76,6 +92,11 @@ export const regions: Region[] = [
       "Knee-replacement rehab",
     ],
     help: "We assess the joint and plan treatment and rehabilitation exercises.",
-    treatHref: "/orthopedic-physiotherapy/#knee-pain",
+    treat: [
+      {
+        label: "Knee, shoulder and arthritis",
+        href: "/orthopedic-physiotherapy/",
+      },
+    ],
   },
 ];

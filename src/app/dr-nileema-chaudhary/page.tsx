@@ -96,6 +96,13 @@ export default function DoctorPage() {
           >
             our services
           </Link>
+          , or read{" "}
+          <Link
+            href={routes.reviews.path}
+            className="text-sp-blue-700 underline"
+          >
+            what patients say
+          </Link>
           .
         </p>
       </Section>
