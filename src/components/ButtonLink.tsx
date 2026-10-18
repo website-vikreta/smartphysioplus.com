@@ -35,14 +35,7 @@ export function ButtonLink({
   ...props
 }: Props) {
   return (
-    <Link
-      className={cn(
-        "sp-btn",
-        styles[variant],
-        className,
-      )}
-      {...props}
-    >
+    <Link className={cn("sp-btn", styles[variant], className)} {...props}>
       <PushLayers>
         {icon && <Icon name={icon} />}
         {children}

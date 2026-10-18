@@ -4,8 +4,8 @@ import { whatsappLink } from "@/lib/format";
 import { ButtonLink } from "./ButtonLink";
 import { BrandLogo, Icon } from "./Icon";
 
-// Reused at the end of every indexable page.
-export function CtaBand() {
+// Reused at the end of every indexable page. P1 pages pass `concern` to prefill booking and add Directions.
+export function CtaBand({ concern }: { concern?: string }) {
   const { street, locality, city, postalCode } = clinic.address;
   return (
     <section id="book-cta" aria-labelledby="cta-heading" className="px-4 py-12">
@@ -17,8 +17,16 @@ export function CtaBand() {
           We start with a thorough assessment. No account needed to book.
         </p>
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-          <ButtonLink href={routes.book.path} variant="light" icon="calendar">
-            Book appointment
+          <ButtonLink
+            href={
+              concern
+                ? `${routes.book.path}?concern=${concern}`
+                : routes.book.path
+            }
+            variant="light"
+            icon="calendar"
+          >
+            {concern ? "Book for this" : "Book appointment"}
           </ButtonLink>
           <ButtonLink href={clinic.phone.tel} variant="light" icon="phone">
             Call {clinic.phone.display}
@@ -32,6 +40,17 @@ export function CtaBand() {
             <BrandLogo name="whatsapp" className="size-5" />
             WhatsApp
           </ButtonLink>
+          {concern && (
+            <ButtonLink
+              href={clinic.google.directionsUrl}
+              variant="light"
+              icon="pin"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Directions
+            </ButtonLink>
+          )}
         </div>
         <p className="mt-6 inline-flex items-center gap-2 text-sm text-sp-teal-100">
           <Icon name="pin" className="size-4" />

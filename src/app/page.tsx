@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { ButtonLink } from "@/components/ButtonLink";
 import { CtaBand } from "@/components/CtaBand";
-import { Faq } from "@/components/Faq";
+import { FaqLinks } from "@/components/FaqLinks";
 import { Icon, IconBadge, type IconName } from "@/components/Icon";
 import { MapFacade } from "@/components/MapFacade";
-import { StackCards } from "@/components/StackCards";
+import { JourneySteps } from "@/components/JourneySteps";
 import { Section } from "@/components/PageShell";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { Reviews } from "@/components/Reviews";
@@ -12,9 +12,12 @@ import { SpinePanel } from "@/components/SpinePanel";
 import { TechTabs } from "@/components/TechTabs";
 import { Tour } from "@/components/Tour";
 import { clinic } from "@/content/clinic";
-import { localFaq } from "@/content/faq";
 import { flags } from "@/content/flags";
 import { routes } from "@/content/routes";
+import { resolveHref } from "@/content/futureRoutes";
+import { type RegionId, regions } from "@/content/regions";
+import { publishable } from "@/lib/publishable";
+import { liveResources, resourcePath } from "@/lib/resources";
 import { formatHours } from "@/lib/format";
 import { pageMetadata } from "@/lib/seo";
 
@@ -28,25 +31,6 @@ export const metadata = pageMetadata({
 const ortho = routes.ortho.path;
 const neuro = routes.neuro.path;
 
-const steps = [
-  {
-    icon: "user" as IconName,
-    title: "Assessment",
-    body: "Dr. Nileema Chaudhary asks about your pain and history, reviews any scans or reports you bring, and examines how you move. She explains what she finds in plain words.",
-  },
-  {
-    icon: "hands" as IconName,
-    title: "Treatment",
-    body: "Your plan is personal. It can combine manual therapy with advanced machines such as robotic spine decompression, TECAR, shockwave and laser, when your assessment supports them.",
-  },
-  {
-    icon: "rehab" as IconName,
-    title: "Rehabilitation",
-    body: "Therapeutic exercise and a personalised exercise plan help you rebuild strength and movement. We check your progress and give you exercises to do at home.",
-  },
-];
-
-const stepImg = ["leg", "back", "exercise"] as const;
 const careImg = {
   spine: "spine",
   joint: "shoulder",
@@ -203,7 +187,23 @@ export default function Home() {
                 className="absolute -bottom-4 -right-4 hidden size-full rounded-[2rem] bg-sp-blue-700/15 md:block"
               />
               <div className="sp-card relative !rounded-[2rem] !p-4 shadow-xl md:!p-6">
-                <SpinePanel />
+                <SpinePanel
+                  treat={
+                    Object.fromEntries(
+                      regions.map((r) => [
+                        r.id,
+                        r.treat.map((t) => ({
+                          ...t,
+                          // The joints region opens the conditions hub, filtered, once it is publishable.
+                          href:
+                            r.id === "joints" && publishable.conditionsHub
+                              ? `${routes.conditions.path}?region=joints`
+                              : resolveHref(t.href),
+                        })),
+                      ]),
+                    ) as Record<RegionId, { label: string; href: string }[]>
+                  }
+                />
               </div>
             </div>
           </div>
@@ -237,7 +237,7 @@ export default function Home() {
                     {c.items.map((i) => (
                       <li key={i.name}>
                         <Link
-                          href={i.href}
+                          href={resolveHref(i.href)}
                           className="sp-tag sp-btn-line inline-flex min-h-11 items-center px-5 text-sm"
                         >
                           {i.name}
@@ -249,6 +249,16 @@ export default function Home() {
               </div>
             ))}
           </div>
+          {publishable.conditionsHub && (
+            <p className="mt-8">
+              <Link
+                href={routes.conditions.path}
+                className="text-sp-blue-700 underline"
+              >
+                See all conditions
+              </Link>
+            </p>
+          )}
           <p className="mt-8">
             See every service on our{" "}
             <Link
@@ -273,32 +283,7 @@ export default function Home() {
           title="How it works"
           intro="Three steps from first visit to recovery. Keep scrolling."
         >
-          <StackCards
-            items={steps.map((s, i) => ({
-              key: s.title,
-              content: (
-                <div className="sp-card grid overflow-hidden !p-0 shadow-xl md:grid-cols-2">
-                  <PlaceholderImage
-                    name={stepImg[i]}
-                    alt={`Placeholder photo for ${s.title.toLowerCase()}`}
-                    className="h-48 w-full object-cover md:h-full md:min-h-72"
-                  />
-                  <div className="p-6 md:p-10">
-                    <div className="flex items-center gap-4">
-                      <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-sp-blue-700 font-display text-lg font-semibold text-sp-white">
-                        {i + 1}
-                      </span>
-                      <h3 className="flex-1 text-xl font-semibold text-sp-blue-900">
-                        {s.title}
-                      </h3>
-                      <Icon name={s.icon} className="size-7 text-sp-teal-500" />
-                    </div>
-                    <p className="mt-5">{s.body}</p>
-                  </div>
-                </div>
-              ),
-            }))}
-          />
+          <JourneySteps />
           <p className="mt-6">
             <Link
               href={routes.physiotherapy.path}
@@ -364,11 +349,53 @@ export default function Home() {
 
         <Section title="Patient reviews">
           <Reviews />
+          <p className="mt-6">
+            <Link
+              href={routes.reviews.path}
+              className="text-sp-blue-700 underline"
+            >
+              Read what patients say
+            </Link>
+          </p>
         </Section>
 
-        <Section title="Common questions" tint>
-          <Faq items={localFaq()} />
-        </Section>
+        {liveResources.length > 0 && (
+          <Section title="From our guides">
+            <div className="sp-card sp-card-link max-w-xl">
+              <h3 className="text-lg font-semibold text-sp-blue-900">
+                {liveResources[0].title}
+              </h3>
+              <p className="mt-1 text-sm">{liveResources[0].summary}</p>
+              <Link
+                href={resourcePath(liveResources[0].slug)}
+                className="mt-3 inline-flex min-h-12 items-center text-sp-blue-700 underline"
+              >
+                Read the guide
+              </Link>
+              {publishable.resourcesIndex && (
+                <Link
+                  href={routes.resources.path}
+                  className="ml-4 inline-flex min-h-12 items-center text-sp-blue-700 underline"
+                >
+                  All guides
+                </Link>
+              )}
+            </div>
+          </Section>
+        )}
+
+        {publishable.faqs && (
+          <Section title="Common questions" tint>
+            <FaqLinks
+              ids={[
+                "how-do-i-book",
+                "what-to-bring",
+                "what-are-your-hours",
+                "is-a-physiotherapist-a-doctor",
+              ]}
+            />
+          </Section>
+        )}
 
         <Section title="Visit us">
           <div className="grid gap-6 md:grid-cols-2">

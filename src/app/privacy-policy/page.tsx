@@ -2,6 +2,7 @@ import { PageHeading, PageShell, Section } from "@/components/PageShell";
 import { clinic } from "@/content/clinic";
 import { flags } from "@/content/flags";
 import { routes } from "@/content/routes";
+import { publishable } from "@/lib/publishable";
 import { pageMetadata } from "@/lib/seo";
 
 const path = routes.privacy.path;
@@ -37,9 +38,12 @@ export default function PrivacyPage() {
           <p>
             When you request an appointment: your name, mobile number, optional
             email, your area of concern, preferred time, whether it is your
-            first visit and an optional short note. When you send a message:
-            your name, mobile number and message. There are no user accounts on
-            this site.
+            first visit and an optional short note.{" "}
+            {/* Shown while the home visit option is on the booking form. */}
+            {publishable.homeVisit &&
+              "If you ask for physiotherapy at home, we also collect the address for the visit. It is stored with your request and deleted with it."}{" "}
+            When you send a message: your name, mobile number and message. There
+            are no user accounts on this site.
           </p>
           <h2 className="text-xl font-semibold text-sp-blue-900">
             Why we collect it

@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import { submitBooking } from "@/app/actions";
 import { regions } from "@/content/regions";
 import { routes } from "@/content/routes";
-import { track } from "@/lib/analytics";
+import { sourcePage, track } from "@/lib/analytics";
 import { whatsappLink } from "@/lib/format";
 import {
   bookingSchema,
@@ -32,7 +32,7 @@ const STORAGE = "sp_booking";
 const STEP_FIELDS: (keyof BookingInput)[][] = [
   ["concern"],
   ["date", "time"],
-  ["fullName", "phone", "email", "note", "consent"],
+  ["fullName", "phone", "email", "homeAddress", "note", "consent"],
   [],
 ];
 const TITLES = [
@@ -45,7 +45,9 @@ const TITLES = [
 const concernLabel = (c: Concern) =>
   c === "not_sure"
     ? "Not sure, I need an assessment"
-    : (regions.find((r) => r.id === c)?.name ?? c);
+    : c === "home_visit"
+      ? "Physiotherapy at home"
+      : (regions.find((r) => r.id === c)?.name ?? c);
 
 const pill = (on: boolean) =>
   cn(
@@ -88,7 +90,15 @@ function icsFile(date: string, time: string, minutes: number) {
   return URL.createObjectURL(new Blob([text], { type: "text/calendar" }));
 }
 
-export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
+// `homeVisit` is true only while /physiotherapy-at-home/ is publishable; it adds the home option and address field.
+export function BookingStepper({
+  slotMinutes,
+  homeVisit,
+}: {
+  slotMinutes: number;
+  homeVisit: boolean;
+}) {
+  const concerns = CONCERNS.filter((c) => c !== "home_visit" || homeVisit);
   const params = useSearchParams();
   const startedAt = useRef(0);
   const started = useRef(false);
@@ -113,6 +123,7 @@ export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
       phone: "",
       email: "",
       firstVisit: "yes",
+      homeAddress: "",
       note: "",
       consent: false,
       startedAt: 0,
@@ -140,7 +151,7 @@ export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
       // Ignore unreadable saved state.
     }
     const c = params.get("concern");
-    if (c && (CONCERNS as readonly string[]).includes(c))
+    if (c && (concerns as readonly string[]).includes(c))
       setValue("concern", c as Concern);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -176,7 +187,10 @@ export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
   const begin = () => {
     if (!started.current) {
       started.current = true;
-      track("booking_start");
+      track("booking_start", {
+        concern: v.concern,
+        source_page: sourcePage(),
+      });
     }
   };
 
@@ -193,7 +207,10 @@ export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
         startedAt: startedAt.current,
       });
       if (res.ok) {
-        track("booking_submit", { concern: vals.concern });
+        track("booking_submit", {
+          concern: vals.concern,
+          source_page: sourcePage(),
+        });
         try {
           sessionStorage.removeItem(STORAGE);
         } catch {
@@ -283,7 +300,7 @@ export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
         <fieldset className="mt-4">
           <legend className="sr-only">What is bothering you?</legend>
           <div className="flex flex-wrap gap-2">
-            {[...CONCERNS].map((c) => (
+            {concerns.map((c) => (
               <button
                 key={c}
                 type="button"
@@ -397,6 +414,22 @@ export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
               </span>
             )}
           </label>
+          {v.concern === "home_visit" && (
+            <label className="block">
+              Address for the visit
+              <textarea
+                className={input}
+                rows={3}
+                autoComplete="street-address"
+                {...register("homeAddress")}
+              />
+              {err.homeAddress && (
+                <span role="alert" className="text-red-800">
+                  {err.homeAddress.message}
+                </span>
+              )}
+            </label>
+          )}
           <label className="block">
             Email (optional)
             <input
@@ -474,6 +507,12 @@ export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
             <dd>{v.fullName}</dd>
             <dt className="font-medium">Mobile</dt>
             <dd>{v.phone}</dd>
+            {v.concern === "home_visit" && (
+              <>
+                <dt className="font-medium">Address</dt>
+                <dd>{v.homeAddress}</dd>
+              </>
+            )}
           </dl>
           {/* Honeypot: hidden from people, visible to bots. */}
           <div aria-hidden="true" className="absolute -left-[9999px]">
@@ -509,11 +548,7 @@ export function BookingStepper({ slotMinutes }: { slotMinutes: number }) {
             <PushLayers>Next</PushLayers>
           </button>
         ) : (
-          <button
-            type="submit"
-            disabled={pending}
-            className="sp-btn"
-          >
+          <button type="submit" disabled={pending} className="sp-btn">
             <PushLayers>{pending ? "Sending..." : "Send request"}</PushLayers>
           </button>
         )}

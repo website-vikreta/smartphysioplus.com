@@ -8,6 +8,7 @@ export const CONCERNS = [
   "sacral",
   "joints",
   "not_sure",
+  "home_visit", // offered only while the home visits page is publishable
 ] as const;
 export type Concern = (typeof CONCERNS)[number];
 
@@ -26,20 +27,29 @@ const consent = z
   .boolean()
   .refine((v) => v === true, "Please tick the box to continue");
 
-export const bookingSchema = z.object({
-  concern: z.enum(CONCERNS, { error: "Choose what is bothering you" }),
-  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Pick a preferred day"),
-  time: z.string().regex(/^\d{2}:\d{2}$/, "Pick a preferred time"),
-  fullName: z.string().trim().min(2, "Enter your name").max(80),
-  phone,
-  email: z.union([z.literal(""), z.email("Enter a valid email")]),
-  firstVisit: z.enum(["yes", "no"]),
-  note: z.string().max(500, "Please keep this under 500 characters"),
-  consent,
-  startedAt: z.number(),
-  website: z.string().max(0), // honeypot: real people never fill this
-  turnstileToken: z.string(),
-});
+export const bookingSchema = z
+  .object({
+    concern: z.enum(CONCERNS, { error: "Choose what is bothering you" }),
+    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Pick a preferred day"),
+    time: z.string().regex(/^\d{2}:\d{2}$/, "Pick a preferred time"),
+    fullName: z.string().trim().min(2, "Enter your name").max(80),
+    phone,
+    email: z.union([z.literal(""), z.email("Enter a valid email")]),
+    firstVisit: z.enum(["yes", "no"]),
+    homeAddress: z
+      .string()
+      .trim()
+      .max(300, "Please keep this under 300 characters"),
+    note: z.string().max(500, "Please keep this under 500 characters"),
+    consent,
+    startedAt: z.number(),
+    website: z.string().max(0), // honeypot: real people never fill this
+    turnstileToken: z.string(),
+  })
+  .refine((d) => d.concern !== "home_visit" || d.homeAddress.length >= 10, {
+    message: "Enter the address for the visit",
+    path: ["homeAddress"],
+  });
 export type BookingInput = z.infer<typeof bookingSchema>;
 
 export const enquirySchema = z.object({

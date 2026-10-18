@@ -18,6 +18,8 @@ export const clinic = {
     e164: "+918669922351",
     tel: "tel:+918669922351",
   },
+  // TODO-CONFIRM: area the clinic covers for home visits, in the clinic's own words. Never invent a radius (flag: homeVisits).
+  homeVisitArea: null as string | null,
   whatsapp: "https://wa.me/918669922351",
   hours: [
     {

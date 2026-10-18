@@ -25,3 +25,18 @@ Never push to `main` or `release-10-2026`. Branch off `release-10-2026` per task
 ## Commands (PowerShell, pnpm)
 
 `pnpm dev` | `pnpm build` | `pnpm lint` | `pnpm typecheck` | `pnpm format`
+
+## Reviews policy (hard rules)
+
+Built into `/review/` and `/review/print/`. Do not add features that break these.
+
+1. No review gating: never ask "were you happy?" first and send only happy patients to Google.
+2. No incentives, discounts or gifts for reviews.
+3. No pre-written or suggested review text, and no AI-generated reviews.
+4. Never ask staff, family or friends to post reviews.
+5. `/review/` and `/review/print/` stay `noindex, nofollow`, out of the sitemap and the main nav.
+6. Quotes in `src/content/reviews.ts` show only with `consentRecordedAt`. No `Review` or `AggregateRating` schema on our pages.
+
+## P2 publish rules
+
+`src/lib/publishable.ts` decides which P2 pages are live; the sitemap, nav, hubs, breadcrumbs and `pnpm check-links` all read it. A page that fails its rule still builds as `noindex` and is never linked. `/physiotherapy-at-home/` is a 404 while `homeVisits` is off.

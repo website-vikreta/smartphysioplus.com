@@ -1,6 +1,7 @@
 "use server";
 
 import { clinic } from "@/content/clinic";
+import { flags } from "@/content/flags";
 import { db } from "@/lib/db";
 import { clientIp, rateLimited, verifyTurnstile } from "@/lib/guard";
 import { sendEmails } from "@/lib/notify";
@@ -61,6 +62,13 @@ export async function submitBooking(raw: unknown): Promise<ActionResult> {
   if (blocked === "bot") return { ok: true };
   if (blocked) return { ok: false, error: blocked };
 
+  // TODO-CONFIRM: home visits are offered only when the clinic confirms (flag: homeVisits).
+  if (d.concern === "home_visit" && !flags.homeVisits)
+    return {
+      ok: false,
+      error: `Home visits are not available online. ${callUs}`,
+    };
+
   const slot = Number(process.env.SLOT_MINUTES) || DEFAULT_SLOT_MINUTES;
   if (!isValidSlot(d.date, d.time, slot))
     return {
@@ -80,6 +88,7 @@ export async function submitBooking(raw: unknown): Promise<ActionResult> {
     preferred_start: toInstant(d.date, d.time).toISOString(),
     first_visit: d.firstVisit === "yes",
     note: d.note || null,
+    home_address: d.concern === "home_visit" ? d.homeAddress : null,
     consent_at: new Date().toISOString(),
   });
   if (error) {
@@ -97,6 +106,9 @@ export async function submitBooking(raw: unknown): Promise<ActionResult> {
       ["Concern", d.concern],
       ["Preferred time", formatSlot(d.date, d.time)],
       ["First visit", d.firstVisit],
+      ...(d.concern === "home_visit"
+        ? ([["Home address", d.homeAddress]] as [string, string][])
+        : []),
       ["Note", d.note || "-"],
     ],
   });
