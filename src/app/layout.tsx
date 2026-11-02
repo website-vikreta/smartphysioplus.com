@@ -2,14 +2,16 @@ import type { Metadata } from "next";
 import { Bricolage_Grotesque } from "next/font/google";
 import { Analytics } from "@/components/Analytics";
 import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
+import { Header, type NavItem } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
 import { MobileActionBar } from "@/components/MobileActionBar";
 import { TopBar } from "@/components/TopBar";
 import { clinic } from "@/content/clinic";
 import { routes } from "@/content/routes";
-import { livePages, pagePath } from "@/lib/content";
+import { resolveHref } from "@/content/futureRoutes";
+import { conditionAreas } from "@/content/services";
 import { publishable } from "@/lib/publishable";
+import { liveResources, resourcePath } from "@/lib/resources";
 import { siteSchema } from "@/lib/schema";
 import "./globals.css";
 
@@ -26,6 +28,50 @@ export const metadata: Metadata = {
     "Advanced robotic physiotherapy in Balewadi, Pune for back, neck and joint pain. Assessment-led plans with Dr. Nileema Chaudhary. Book or call today.",
 };
 
+// Main navigation: Home, About Us, Conditions we treat, Services, More (FAQs, Blog), Contact.
+// FAQs and Blog follow src/lib/publishable.ts: a page that isn't live is never linked.
+const more: NavItem[] = [
+  ...(publishable.faqs ? [{ label: "FAQs", href: routes.faqs.path }] : []),
+  ...(publishable.resourcesIndex
+    ? [
+        {
+          label: "Blog",
+          href: routes.resources.path,
+          children: liveResources.map((r) => ({
+            label: r.title,
+            href: resourcePath(r.slug),
+          })),
+        },
+      ]
+    : []),
+];
+
+const navItems: NavItem[] = [
+  { label: "Home", href: routes.home.path },
+  { label: "About Us", href: routes.about.path },
+  {
+    label: "Conditions we treat",
+    href: publishable.conditionsHub ? routes.conditions.path : "/#conditions",
+    children: conditionAreas.map((a) => ({
+      label: a.label,
+      href: resolveHref(a.href),
+    })),
+  },
+  {
+    label: "Services",
+    href: routes.services.path,
+    children: [
+      { label: "Technology", href: `${routes.services.path}#technology` },
+      {
+        label: "Manual therapy",
+        href: `${routes.services.path}#manual-therapy`,
+      },
+    ],
+  },
+  ...(more.length ? [{ label: "More", children: more }] : []),
+  { label: "Contact", href: routes.contact.path },
+];
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={bricolage.variable}>
@@ -37,21 +83,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <TopBar />
-        <Header
-          conditions={livePages
-            .filter((p) => p.cluster !== "service-local")
-            .map((p) => ({ href: pagePath(p.slug), label: p.title }))}
-          conditionsHub={
-            publishable.conditionsHub ? routes.conditions.path : undefined
-          }
-          more={[
-            routes.about,
-            ...(publishable.rehabHub ? [routes.rehabilitation] : []),
-            routes.reviews,
-            ...(publishable.faqs ? [routes.faqs] : []),
-            ...(publishable.resourcesIndex ? [routes.resources] : []),
-          ].map((r) => ({ href: r.path, label: r.name }))}
-        />
+        <Header items={navItems} />
         {children}
         <Footer />
         <MobileActionBar />

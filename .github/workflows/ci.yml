@@ -19,6 +19,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck
       - run: pnpm lint
+      - run: pnpm test:reviews
       - run: pnpm build
       - name: Link matrix, review gate, schema and sitemap checks
         run: |

@@ -16,7 +16,7 @@ const services = allServices.map((s) => ({ ...s, href: resolveHref(s.href) }));
 export const metadata = pageMetadata({
   title: "Physiotherapy Services in Balewadi, Pune | Smart Physio+",
   description:
-    "Spine care, joint and muscle pain, neuro and balance, rehabilitation, manual therapy and advanced technology at Smart Physio+ in Balewadi, Pune.",
+    "Manual therapy and advanced technology at Smart Physio+ in Balewadi, Pune, with care for spine, joint, neuro and balance problems and rehabilitation.",
   path,
 });
 
@@ -25,7 +25,7 @@ export default function ServicesPage() {
     <PageShell crumbs={[{ name: routes.services.name, path }]}>
       <PageHeading
         title="Our physiotherapy services"
-        intro="Every service starts with an assessment, so your plan fits you. Filter by area to find what you need."
+        intro="Every service starts with an assessment, so your plan fits you. Our care is split into manual therapy and technology."
       />
       <Section>
         <ServiceGrid services={services} groups={serviceGroups} />
