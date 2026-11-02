@@ -18,7 +18,7 @@ export function SpinePoster({ selected }: { selected: RegionId | null }) {
           return `${i ? "L" : "M"}${sx(z)} ${sy(yAt(i))}`;
         }).join(" ")}
         fill="none"
-        stroke="#1cabb0"
+        stroke="#0a8fcf"
         strokeWidth={3}
         strokeLinecap="round"
       />
@@ -36,7 +36,7 @@ export function SpinePoster({ selected }: { selected: RegionId | null }) {
               width={w * 2}
               height={3}
               rx={1.5}
-              fill="#8fc4cb"
+              fill="#8fcbe8"
             />
             <rect
               x={x - w}

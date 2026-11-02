@@ -13,7 +13,6 @@ export const flags = {
   hydro: false,
   inpatient: false,
   homeVisits: false,
-  sunday: false,
   parking: false,
   landmarks: false,
   legalIds: false,

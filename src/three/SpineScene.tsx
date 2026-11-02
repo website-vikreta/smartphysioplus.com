@@ -37,7 +37,7 @@ function useMats(lit: boolean) {
         roughness: 0.55,
       }),
       disc: new THREE.MeshPhysicalMaterial({
-        color: lit ? "#f2a291" : "#8fc4cb",
+        color: lit ? "#f2a291" : "#8fcbe8",
         roughness: 0.35,
       }),
     }),
@@ -218,8 +218,8 @@ function Cord() {
     <group>
       <mesh geometry={cord}>
         <meshStandardMaterial
-          color="#1cabb0"
-          emissive="#1cabb0"
+          color="#0a8fcf"
+          emissive="#0a8fcf"
           emissiveIntensity={0.6}
         />
       </mesh>
@@ -227,7 +227,7 @@ function Cord() {
         <mesh key={k} geometry={g}>
           <meshStandardMaterial
             color="#7fd3d6"
-            emissive="#1cabb0"
+            emissive="#0a8fcf"
             emissiveIntensity={0.4}
           />
         </mesh>
@@ -299,7 +299,7 @@ export default function SpineScene({
     >
       <ambientLight intensity={0.9} />
       <directionalLight position={[3, 4, 5]} intensity={1.6} />
-      <pointLight position={[-4, 0, -3]} intensity={30} color="#1cabb0" />
+      <pointLight position={[-4, 0, -3]} intensity={30} color="#0a8fcf" />
       <PresentationControls
         global
         polar={[-0.25, 0.25]}

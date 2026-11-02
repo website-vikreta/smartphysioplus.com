@@ -106,15 +106,6 @@ export const faqs: FaqEntry[] = [
     group: "Location and timings",
     home: "faqs",
   },
-  // TODO-CONFIRM: Sunday hours (flag: sunday).
-  {
-    id: "are-you-open-on-sunday",
-    question: "Are you open on Sunday?",
-    answer: "We are closed on Sundays.",
-    group: "Location and timings",
-    home: "faqs",
-    flag: "sunday",
-  },
   {
     id: "where-is-the-clinic",
     question: "Where is the clinic?",

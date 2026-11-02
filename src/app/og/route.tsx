@@ -42,7 +42,7 @@ export async function GET(request: Request) {
           alignItems: "center",
           justifyContent: "center",
           textAlign: "center",
-          background: "#DDF4F5",
+          background: "#E0F4FF",
           fontSize: title.length > 40 ? 52 : 64,
           fontWeight: 700,
           lineHeight: 1.1,
