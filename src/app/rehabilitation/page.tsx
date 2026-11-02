@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { DraftBanner } from "@/components/DraftBanner";
-import { JourneySteps } from "@/components/JourneySteps";
+import { ProcessSteps } from "@/components/ProcessSteps";
 import { JsonLd } from "@/components/JsonLd";
 import { PageHeading, PageShell, Section } from "@/components/PageShell";
 import { flags } from "@/content/flags";
+import { processHeading, processIntro } from "@/content/process";
 import { routes } from "@/content/routes";
 import { livePages, pagePath } from "@/lib/content";
 import { publishable } from "@/lib/publishable";
@@ -87,11 +88,8 @@ export default function RehabilitationHub() {
           </p>
         }
       />
-      <Section
-        title="How rehabilitation works here"
-        intro="The same three steps apply to every plan."
-      >
-        <JourneySteps />
+      <Section title={processHeading} intro={processIntro}>
+        <ProcessSteps />
       </Section>
       <Section title="Rehabilitation we offer" tint>
         <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

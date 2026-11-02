@@ -15,7 +15,7 @@ export function PrintControls() {
       <style>{`@page { size: ${sheet === "a6" ? "A6" : "A4"}; margin: 0 }
 .sheet-a6 { display: ${sheet === "a6" ? "flex" : "none"}; justify-content: center }
 .sheet-a4 { display: ${sheet === "a4" ? "grid" : "none"}; grid-template-columns: repeat(2, 105mm); justify-content: center }
-.review-card { box-sizing: border-box; width: 105mm; height: 148mm; border: 1px dashed #8fc4cb }
+.review-card { box-sizing: border-box; width: 105mm; height: 148mm; border: 1px dashed #8fcbe8 }
 @media print {
   * { print-color-adjust: exact; -webkit-print-color-adjust: exact }
   body > *:not(main) { display: none !important }

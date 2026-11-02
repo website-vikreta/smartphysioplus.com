@@ -1,13 +1,7 @@
 import { flags } from "./flags";
 
 export type ServiceGroup =
-  | "Spine"
-  | "Joints"
-  | "Neuro & balance"
-  | "Rehabilitation"
-  | "Special care"
-  | "Technology"
-  | "Manual therapy";
+  "Manual therapy" | "Technology" | "Conditions and care";
 
 export type Service = {
   name: string;
@@ -26,29 +20,21 @@ const physio = "/physiotherapy/";
 const all: Service[] = [
   {
     name: "Back pain",
-    group: "Spine",
+    group: "Conditions and care",
     blurb: "Assessment and a plan for pain in the lower or upper back.",
     href: `${ortho}#back-pain`,
     enabled: true,
   },
   {
-    name: "Robotic spinal decompression",
-    group: "Spine",
-    blurb:
-      "A computer-guided way to gently stretch the spine, used after assessment.",
-    href: `${ortho}#robotic-decompression`,
-    enabled: true,
-  },
-  {
     name: "Spinal injuries",
-    group: "Spine",
+    group: "Conditions and care",
     blurb: "Assessment and rehabilitation after an injury to the spine.",
     href: `${ortho}#back-pain`,
     enabled: true,
   },
   {
     name: "Chiropractic care",
-    group: "Spine",
+    group: "Manual therapy",
     blurb:
       "Hands-on spinal techniques, used when your assessment supports them.",
     href: `${physio}#approaches`,
@@ -56,7 +42,7 @@ const all: Service[] = [
   },
   {
     name: "Osteopathy",
-    group: "Spine",
+    group: "Manual therapy",
     blurb: "Gentle hands-on techniques for joints, muscles and movement.",
     href: `${physio}#approaches`,
     enabled: true,
@@ -64,49 +50,49 @@ const all: Service[] = [
 
   {
     name: "Orthopedic physiotherapy",
-    group: "Joints",
+    group: "Conditions and care",
     blurb: "Care for bones, joints, muscles and ligaments.",
     href: ortho,
     enabled: true,
   },
   {
     name: "Knee pain",
-    group: "Joints",
+    group: "Conditions and care",
     blurb: "Assessment of the cause and a plan to restore movement.",
     href: `${ortho}#knee-pain`,
     enabled: true,
   },
   {
     name: "Shoulder pain",
-    group: "Joints",
+    group: "Conditions and care",
     blurb: "Assessment and exercises for pain and stiffness in the shoulder.",
     href: `${ortho}#shoulder-pain`,
     enabled: true,
   },
   {
     name: "Hip pain",
-    group: "Joints",
+    group: "Conditions and care",
     blurb: "Assessment and a plan for hip pain and stiffness.",
     href: `${ortho}#hip-pain`,
     enabled: true,
   },
   {
     name: "Foot and ankle pain",
-    group: "Joints",
+    group: "Conditions and care",
     blurb: "Assessment and treatment for foot and ankle problems.",
     href: `${ortho}#foot-ankle-pain`,
     enabled: true,
   },
   {
     name: "Arthritis treatment",
-    group: "Joints",
+    group: "Conditions and care",
     blurb: "Treatment to help you manage joint pain and keep moving.",
     href: `${ortho}#arthritis`,
     enabled: true,
   },
   {
     name: "Massage",
-    group: "Joints",
+    group: "Manual therapy",
     blurb: "Hands-on soft-tissue work, including sports massage.",
     href: `${physio}#approaches`,
     enabled: true,
@@ -114,14 +100,14 @@ const all: Service[] = [
 
   {
     name: "Neurological physiotherapy",
-    group: "Neuro & balance",
+    group: "Conditions and care",
     blurb: "Rehabilitation for balance, movement and nerve-related problems.",
     href: neuro,
     enabled: true,
   },
   {
     name: "Balance exercise therapy (vertigo)",
-    group: "Neuro & balance",
+    group: "Manual therapy",
     blurb: "Exercises to help with dizziness and balance, after assessment.",
     href: `${neuro}#vertigo-balance`,
     enabled: true,
@@ -129,21 +115,21 @@ const all: Service[] = [
 
   {
     name: "Post-surgery rehabilitation",
-    group: "Rehabilitation",
+    group: "Conditions and care",
     blurb: "A step-by-step plan to regain movement and strength after surgery.",
     href: `${ortho}#post-surgery-rehab`,
     enabled: true,
   },
   {
     name: "Therapeutic exercise",
-    group: "Rehabilitation",
+    group: "Manual therapy",
     blurb: "Exercises chosen for your problem and your goals.",
     href: `${physio}#journey`,
     enabled: true,
   },
   {
     name: "Personalised exercise plan",
-    group: "Rehabilitation",
+    group: "Manual therapy",
     blurb: "A plan made for you, with home exercises you can follow.",
     href: `${physio}#journey`,
     enabled: true,
@@ -151,7 +137,7 @@ const all: Service[] = [
   // TODO-CONFIRM: "Inpatient" appears on Google; confirm what it means before showing (flag: inpatient).
   {
     name: "Inpatient care",
-    group: "Rehabilitation",
+    group: "Conditions and care",
     blurb: "Care while staying at the clinic.",
     href: "/contact/",
     enabled: flags.inpatient,
@@ -159,21 +145,21 @@ const all: Service[] = [
 
   {
     name: "Geriatric physiotherapy",
-    group: "Special care",
+    group: "Conditions and care",
     blurb: "Care for older adults, aimed at safe movement and balance.",
     href: `${physio}#who-we-see`,
     enabled: true,
   },
   {
     name: "Pediatric physiotherapy",
-    group: "Special care",
+    group: "Conditions and care",
     blurb: "Physiotherapy for children, planned around their needs.",
     href: `${physio}#who-we-see`,
     enabled: true,
   },
   {
     name: "Women's health physiotherapy",
-    group: "Special care",
+    group: "Conditions and care",
     blurb: "Physiotherapy for health concerns that affect women.",
     href: `${physio}#who-we-see`,
     enabled: true,
@@ -256,11 +242,16 @@ const all: Service[] = [
 export const services = all.filter((s) => s.enabled);
 
 export const serviceGroups: ServiceGroup[] = [
-  "Spine",
-  "Joints",
-  "Neuro & balance",
-  "Rehabilitation",
-  "Special care",
-  "Technology",
   "Manual therapy",
+  "Technology",
+  "Conditions and care",
+];
+
+// Navbar "Conditions we treat" menu, from Spine to Special care. Hrefs go through resolveHref() in the layout.
+export const conditionAreas = [
+  { label: "Spine", href: `${ortho}#back-pain` },
+  { label: "Joints", href: ortho },
+  { label: "Neuro & balance", href: neuro },
+  { label: "Rehabilitation", href: `${ortho}#post-surgery-rehab` },
+  { label: "Special care", href: `${physio}#who-we-see` },
 ];

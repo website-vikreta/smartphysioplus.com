@@ -25,14 +25,14 @@ export function JointDiagram({ label }: { label: string }) {
         <path
           d="M60 92c10 14 26 20 40 20s30-6 40-20"
           fill="none"
-          stroke="#1cabb0"
+          stroke="#0a8fcf"
           strokeWidth="6"
           strokeLinecap="round"
         />
         <path
           d="M60 140c10-14 26-20 40-20s30 6 40 20"
           fill="none"
-          stroke="#1cabb0"
+          stroke="#0a8fcf"
           strokeWidth="6"
           strokeLinecap="round"
         />

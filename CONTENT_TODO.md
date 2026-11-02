@@ -91,4 +91,6 @@ Resource articles and the home-visit page use the same gate. The articles carry 
 ## Later ideas
 
 - Replace every placeholder image (see PLACEHOLDERS.md).
+- Replace process photos with real Smart Physio+ clinic photos (with patient consent): public/images/placeholder/process/step-1..5.jpg.
+- Dr. Nileema to confirm the Plan, Progress and Checkup wording in src/content/process.ts and the review of the home page's recovery steps.
 - FAQs on P1 pages were written from common patient questions; check them against People-Also-Ask / AnswerSocrates research when it is available.
