@@ -6,7 +6,7 @@ export const clinic = {
   tagline: "Healing powered by technology",
   domain: "https://smartphysioplus.com",
   address: {
-    street: "402, Archway, Sopan Baug Road",
+    street: "402, Archway, Sopan Baug Road, Balewadi High Street",
     locality: "Balewadi",
     city: "Pune",
     region: "Maharashtra",
@@ -23,11 +23,10 @@ export const clinic = {
   whatsapp: "https://wa.me/918669922351",
   hours: [
     {
-      days: ["Mo", "Tu", "We", "Th", "Fr", "Sa"],
+      days: ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
       opens: "10:00",
       closes: "20:00",
     },
-    // TODO-CONFIRM: Sunday closed / not listed on Google. Show "Sunday: closed" only after confirmation (flag: sunday).
   ],
   google: {
     // From the Google Maps place page (Oct 2026).

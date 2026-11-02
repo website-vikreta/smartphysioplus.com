@@ -4,10 +4,10 @@ import { Faq } from "@/components/Faq";
 import { FaqLinks } from "@/components/FaqLinks";
 import { JsonLd } from "@/components/JsonLd";
 import { HubLinks, LivePageList } from "@/components/LivePageList";
-import { PlaceholderImage } from "@/components/PlaceholderImage";
-import { StackCards, StackPanel } from "@/components/StackCards";
+import { ProcessSteps } from "@/components/ProcessSteps";
 import { PageHeading, PageShell, Section } from "@/components/PageShell";
 import { physioFaq } from "@/content/faq";
+import { processHeading, processIntro } from "@/content/process";
 import { routes } from "@/content/routes";
 import { livePages } from "@/lib/content";
 import { absoluteUrl, pageMetadata } from "@/lib/seo";
@@ -20,33 +20,6 @@ export const metadata = pageMetadata({
     "How physiotherapy works at Smart Physio+ in Balewadi, Pune: assessment, a personal treatment plan and rehabilitation. Book an assessment today.",
   path,
 });
-
-const journey = [
-  {
-    title: "1. Assessment (your first visit)",
-    points: [
-      "We listen to your story: where it hurts, when it started and what makes it better or worse.",
-      "Dr. Nileema reviews any scans, reports or prescriptions you bring before planning.",
-      "She examines how you move, then explains what she finds in plain words.",
-    ],
-  },
-  {
-    title: "2. Treatment",
-    points: [
-      "We build a personal plan. It can combine manual therapy, exercise and advanced technology.",
-      "We explain each part of the plan and why it is in there.",
-      "You can ask questions at any time.",
-    ],
-  },
-  {
-    title: "3. Rehabilitation",
-    points: [
-      "Exercises help you rebuild strength and movement.",
-      "We check your progress and adjust the plan.",
-      "You get a home exercise routine to keep improving between visits.",
-    ],
-  },
-];
 
 export default function PhysiotherapyPage() {
   return (
@@ -66,31 +39,8 @@ export default function PhysiotherapyPage() {
         </p>
       </Section>
 
-      <Section id="journey" title="The 3-step journey" tint>
-        <StackCards
-          items={journey.map((j, i) => ({
-            key: j.title,
-            content: (
-              <StackPanel
-                n={i + 1}
-                title={j.title}
-                image={
-                  <PlaceholderImage
-                    name={(["leg", "back", "exercise"] as const)[i % 3]}
-                    alt={`Placeholder photo for ${j.title.toLowerCase()}`}
-                    className="h-44 w-full object-cover md:h-full md:min-h-56"
-                  />
-                }
-              >
-                <ul className="list-disc space-y-2 pl-5">
-                  {j.points.map((p) => (
-                    <li key={p}>{p}</li>
-                  ))}
-                </ul>
-              </StackPanel>
-            ),
-          }))}
-        />
+      <Section id="journey" title={processHeading} intro={processIntro}>
+        <ProcessSteps />
       </Section>
 
       <Section id="approaches" title="Treatment approaches">

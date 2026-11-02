@@ -1,4 +1,4 @@
-// Appointment slots: next 14 days, Mon-Sat, 10:00-20:00 IST in SLOT_MINUTES steps.
+// Appointment slots: next 14 days, Mon-Sun, 10:00-20:00 IST in SLOT_MINUTES steps.
 const OPEN = 10 * 60;
 const CLOSE = 20 * 60;
 const IST_OFFSET_MIN = 330;
@@ -21,14 +21,9 @@ const addDays = (date: string, n: number) => {
   return d.toISOString().slice(0, 10);
 };
 
-const isSunday = (date: string) =>
-  new Date(`${date}T00:00:00Z`).getUTCDay() === 0;
-
 export function bookableDays(now = Date.now()) {
   const today = istNow(now).date;
-  return Array.from({ length: 14 }, (_, i) => addDays(today, i)).filter(
-    (d) => !isSunday(d),
-  );
+  return Array.from({ length: 14 }, (_, i) => addDays(today, i));
 }
 
 export function timesFor(date: string, slotMinutes: number, now = Date.now()) {

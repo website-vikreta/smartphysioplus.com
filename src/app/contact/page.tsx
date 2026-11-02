@@ -4,7 +4,6 @@ import { ContactForm } from "@/components/ContactForm";
 import { MapFacade } from "@/components/MapFacade";
 import { PageHeading, PageShell, Section } from "@/components/PageShell";
 import { clinic } from "@/content/clinic";
-import { flags } from "@/content/flags";
 import { routes } from "@/content/routes";
 import { formatHours, whatsappLink } from "@/lib/format";
 import { pageMetadata } from "@/lib/seo";
@@ -18,9 +17,7 @@ export const metadata = pageMetadata({
 });
 
 const dayRows = [
-  ["Monday to Saturday", formatHours().split(", ")[1]],
-  // TODO-CONFIRM: show "Sunday: closed" only after confirmation (flag: sunday).
-  ...(flags.sunday ? [["Sunday", "Closed"]] : []),
+  ["Monday to Sunday", formatHours().split(", ")[1]],
 ];
 
 export default function ContactPage() {

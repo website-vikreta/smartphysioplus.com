@@ -1,10 +1,8 @@
 import Link from "next/link";
-import { ButtonLink } from "@/components/ButtonLink";
 import { JsonLd } from "@/components/JsonLd";
 import { PageHeading, PageShell, Section } from "@/components/PageShell";
-import { ReviewQuotes } from "@/components/ReviewQuotes";
+import { ReviewCards } from "@/components/ReviewCards";
 import { clinic } from "@/content/clinic";
-import { reviews } from "@/content/reviews";
 import { routes } from "@/content/routes";
 import { absoluteUrl, pageMetadata } from "@/lib/seo";
 
@@ -20,7 +18,6 @@ export const metadata = pageMetadata({
 
 // WebPage + BreadcrumbList only. Never Review or AggregateRating (promptP0.md rule 5).
 export default function ReviewsPage() {
-  const external = { target: "_blank", rel: "noopener noreferrer" } as const;
   return (
     <PageShell
       crumbs={[{ name: routes.reviews.name, path: routes.reviews.path }]}
@@ -34,28 +31,7 @@ export default function ReviewsPage() {
         }
       />
       <Section>
-        <div className="flex flex-wrap gap-3">
-          <ButtonLink href={clinic.google.reviewsUrl} icon="star" {...external}>
-            Read all our reviews on Google
-          </ButtonLink>
-          <ButtonLink href={routes.review.path} variant="secondary">
-            Leave a review
-          </ButtonLink>
-        </div>
-
-        {reviews.length > 0 && (
-          <div className="mt-10">
-            <h2 className="text-xl font-semibold text-sp-blue-900">
-              In patients&apos; own words
-            </h2>
-            <p className="mt-2 max-w-2xl text-sm">
-              Shared with each patient&apos;s permission, as they wrote them.
-            </p>
-            <div className="mt-4">
-              <ReviewQuotes reviews={reviews} />
-            </div>
-          </div>
-        )}
+        <ReviewCards />
 
         <p className="mt-10 max-w-2xl">
           Meet{" "}
